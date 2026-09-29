@@ -340,8 +340,6 @@ The code is released under the [Apache License 2.0](LICENSE). The WildlifeVid an
 
 ## Acknowledgements
 
-This research was supported by the Ministry of Business, Innovation and Employment (MBIE) Smart Ideas project "Stoat Re-Identification Powered by Artificial Intelligence for Effective Pest Management in Aotearoa" (UOA2505).
-
 WildIcon code repo is built on [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio) and [Wan2.2](https://github.com/Wan-Video/Wan2.2). We thank the DiffSynth-Studio and Wan2.2 open-source communities for releasing the training and inference infrastructure that makes this research code possible. We also thank the authors of [DINOv3](https://github.com/facebookresearch/dinov3), [DreamSim](https://github.com/ssundaram21/dreamsim), [AMT](https://github.com/MCG-NKU/AMT) and [CLIP](https://github.com/openai/CLIP), which we use for identity encoding and evaluation, and the creators of [Animal-in-Motion](https://github.com/briannlongzhao/Animal-in-Motion), [Animal Kingdom](https://github.com/sutdcv/Animal-Kingdom), [LoTE-Animal](https://lote-animal.github.io/) and [MammalNet](https://mammal-net.github.io/), the source datasets of WildlifeVid.
 
 ## Citation
