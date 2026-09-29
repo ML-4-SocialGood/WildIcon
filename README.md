@@ -1,19 +1,35 @@
-# WildIcon
+<div align="center">
 
-Official code and annotations for **Generating the Wild: Individual-Consistent Image-to-Video Generation for Wildlife** (NeurIPS 2026).
+<h1>WildIcon</h1>
 
-Yuzhuo Li, Di Zhao, Xinyu Zhang, Daniel Wilson, Yun Sing Koh — School of Computer Science, University of Auckland
+<h3>Generating the Wild: Individual-Consistent Image-to-Video Generation for Wildlife</h3>
+
+<a href="https://openreview.net/profile?id=~Yuzhuo_Li1">Yuzhuo Li</a>&emsp;
+<a href="https://openreview.net/profile?id=~Di_Zhao4">Di Zhao</a>&emsp;
+<a href="https://openreview.net/profile?id=~Xinyu_Zhang3">Xinyu Zhang</a>&emsp;
+<a href="https://openreview.net/profile?id=~Daniel_Wilson4">Daniel Wilson</a>&emsp;
+<a href="https://openreview.net/profile?id=~Yun_Sing_Koh2">Yun Sing Koh</a>
+
+School of Computer Science, University of Auckland
+
+<a href="https://openreview.net/forum?id=Twfrs5sTBH"><img src="assets/badges/neurips-2026.svg" alt="NeurIPS 2026 Paper"></a>
+<a href="annotations/"><img src="https://img.shields.io/badge/WildlifeVid-Annotations-1A7A4A?style=for-the-badge" alt="WildlifeVid annotations"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/Code-Apache%202.0-2F6DB5?style=for-the-badge&logo=apache&logoColor=white" alt="Code license: Apache 2.0"></a>
+<a href="annotations/LICENSE"><img src="https://img.shields.io/badge/Data-CC%20BY%204.0-EF9421?style=for-the-badge&logo=creativecommons&logoColor=white" alt="Annotation license: CC BY 4.0"></a>
+
+</div>
+
+<br>
 
 WildIcon studies individual-consistent image-to-video (I2V) generation for wildlife. Given one reference image and a motion prompt, the goal is to synthesize temporally coherent videos that preserve the same wildlife individual, including fine-grained identity cues such as texture, stripe boundaries, spot configurations, and local contour transitions.
 
 <p align="center">
-  <img src="assets/figures/wildicon_teaser.png" alt="WildIcon teaser: frequency-aware identity preservation for wildlife I2V" width="80%">
+  <img src="assets/figures/wildicon_teaser.png" alt="WildIcon teaser: frequency-aware identity preservation for wildlife I2V" width="85%">
   <br>
-  Figure 1. Frequency-aware identity preservation in wildlife I2V generation. (a) Low-frequency views preserve coarse body structure but suppress fine-grained identity cues, whereas high-frequency views reveal local identity-discriminative details.
-    (b) Given the same reference image and prompt, Wan2.2 blurs or alters identity-critical stripe patterns across frames, while WildIcon better preserves these fine-grained cues for same-individual consistency.
+  <em><strong>Figure 1.</strong> Frequency-aware identity preservation in wildlife I2V generation. (a) Low-frequency views preserve coarse body structure but suppress fine-grained identity cues, whereas high-frequency views reveal local identity-discriminative details. (b) Given the same reference image and prompt, Wan2.2 blurs or alters identity-critical stripe patterns across frames, while WildIcon better preserves these fine-grained cues for same-individual consistency.</em>
 </p>
 
-## Highlights
+## ✨ Highlights
 
 - **WildIcon**: a high-frequency-guided I2V framework built on a frozen Wan2.2 backbone with lightweight identity adaptation.
 - **Foreground-filtered identity cues**: the reference foreground and its high-frequency residual are encoded as complementary identity tokens.
@@ -22,12 +38,12 @@ WildIcon studies individual-consistent image-to-video (I2V) generation for wildl
 - **WildlifeVid**: a wildlife-centric video dataset with individual identity labels and standardized prompts for individual-consistent I2V.
 - **Downstream utility**: generated videos are evaluated for video quality, subject consistency, and usefulness for animal re-identification (ReID) training.
 
-## Method Overview
+## 🧭 Method Overview
 
 <p align="center">
   <img src="assets/figures/wildicon_method.png" alt="WildIcon method overview" width="85%">
   <br>
-  Figure 2. Overview of the WildIcon framework.
+  <em><strong>Figure 2.</strong> Overview of the WildIcon framework.</em>
 </p>
 
 WildIcon augments Wan2.2-I2V with a frequency-aware identity branch. For a reference image `I_ref`, the framework first obtains a foreground-isolated image `I_seg` and computes a high-frequency residual map `I_hf`. A frozen DINO visual encoder processes the foreground image, while a lightweight trainable high-frequency encoder processes the residual map. The fused identity tokens are projected into the Wan conditioning space and concatenated with text tokens for selected cross-attention blocks.
@@ -40,7 +56,7 @@ L = L_FM + lambda_id * L_id
 
 where `L_id` compares sampled decoded frames with the reference image in a frozen identity-feature space. The released training scripts expose this through `WILDICON_IDENTITY_LOSS_WEIGHT`, `WILDICON_IDENTITY_LOSS_MODEL`, and `WILDICON_IDENTITY_LOSS_NUM_FRAMES`.
 
-## Repository Layout
+## 📁 Repository Layout
 
 ```text
 WildIcon/
@@ -54,13 +70,13 @@ WildIcon/
 │   └── 📄 LICENSE                # CC BY 4.0
 ├── 📂 dataset/                   # Annotation checks, local training metadata, curation scripts
 ├── 📂 evaluation/                # Paper metrics and FVD
-├── 📂 assets/figures/            # README figures
+├── 📂 assets/                    # README figures and badge
 ├── 📂 tools/                     # Overlay installer
 ├── 📄 requirements.txt           # Extra Python dependencies
 └── 📄 README.md
 ```
 
-## Installation
+## 🛠️ Installation
 
 1. Clone DiffSynth-Studio at the commit the overlay was prepared against, and install it.
 
@@ -94,7 +110,7 @@ Wan2.2-I2V-A14B/
 └── 📄 Wan2.1_VAE.pth
 ```
 
-## WildlifeVid
+## 🐾 WildlifeVid
 
 WildlifeVid is curated for wildlife individual-consistent I2V training and evaluation. It contains 37,441 single-subject video clips, 16,524 individual identities, and 135 species from four public sources. Each retained clip is paired with an individual identity label and a standardized prompt.
 
@@ -108,14 +124,18 @@ Source composition:
 
 | Source | Videos | Identities | Species |
 | --- | ---: | ---: | ---: |
-| AiM | 11,500 | 4,672 | 23 |
-| AnimalKingdom | 13,925 | 6,381 | 82 |
-| LoTE-Animal | 9,176 | 3,731 | 9 |
-| MammalNet | 2,840 | 1,740 | 84 |
+| [AiM](https://github.com/briannlongzhao/Animal-in-Motion) | 11,500 | 4,672 | 23 |
+| [AnimalKingdom](https://github.com/sutdcv/Animal-Kingdom) | 13,925 | 6,381 | 82 |
+| [LoTE-Animal](https://lote-animal.github.io/) | 9,176 | 3,731 | 9 |
+| [MammalNet](https://mammal-net.github.io/) | 2,840 | 1,740 | 84 |
 
 ### Annotations
 
 The annotations are in [`annotations/WildlifeVid.csv`](annotations/WildlifeVid.csv), one row per clip. We do not redistribute the source videos or raw frames; obtain them from the original datasets under their terms of use.
+
+<details>
+<summary><b>Column reference</b></summary>
+<br>
 
 | Column | Content |
 | --- | --- |
@@ -127,15 +147,17 @@ The annotations are in [`annotations/WildlifeVid.csv`](annotations/WildlifeVid.c
 | `identity`, `identity_str` | Identity label within the species |
 | `global_identity` | Identity label across WildlifeVid |
 | `reference_image` | Reference frame path, relative to the local data root |
-| `segmented_image` | Empty: foreground images are prepared locally (see [Training](#training)) |
+| `segmented_image` | Empty: foreground images are prepared locally (see [Training](#-training)) |
 | `segment_prompt`, `segment_status`, `segment_score` | Record of our local foreground-extraction pass; the foreground images themselves are not released |
 | `source_*` | The row's species and identity ids in its per-source table |
+
+</details>
 
 Species labels keep each source's naming. Merging case variants and three synonyms (`hippo`/`hippopotamus`, `racoon`/`raccoon`, `rhino`/`rhinoceros`) gives the 135 species above.
 
 `annotations/source/` holds the four per-source tables. [`dataset/scripts/merge_wildlifevid_metadata.py`](dataset/scripts/merge_wildlifevid_metadata.py) rebuilds `WildlifeVid.csv` from them. [`dataset/validate_annotations.py`](dataset/validate_annotations.py) checks the table and prints the counts above. The remaining scripts in `dataset/scripts/` cover initial identity labeling, same-identity clip clustering, species normalization, and duration probing.
 
-## Training
+## 🚀 Training
 
 Training reads the source videos, reference frames and foreground images from a local data root. The foreground images are not distributed. Produce one per reference image, i.e. the reference image with the background removed. Then write a local training table that points to them:
 
@@ -187,7 +209,7 @@ Important knobs:
 - `--wildicon_selected_block_ids`: selects the DiT blocks that receive identity conditioning.
 - `--wildicon_identity_loss_weight`: enables the frozen feature-space identity loss when greater than `0`.
 
-## Inference
+## 🎬 Inference
 
 Run the inference script from the DiffSynth-Studio root. `--prompt_json` maps each reference image file name to a list of prompts, e.g. `{"tiger_01.png": ["The tiger walks slowly forward.", "..."]}`. The foreground images in `--segmented_dir` use the same file names as the references.
 
@@ -204,7 +226,7 @@ python examples/wanvideo/model_training/validate_full/Wan2.2-I2V-A14B-WildIcon-W
 
 Each run loads one adapter checkpoint at a time. `--stage_mode` selects which checkpoint directory is rendered: `low_only` (default), `high_only`, or `both`. Videos are written to `<output_root>/<stage>/<checkpoint>/generated_videos/` as 81 frames at 832×480 and 16 FPS. A `generation_manifest.csv` next to them records the exact reference image and prompt of each video. `Wan2.2-TI2V-5B-WildIcon-WildlifeEval.py` in the same directory is the TI2V-5B counterpart.
 
-## Evaluation
+## 📊 Evaluation
 
 `evaluation/evaluate_generated_videos.py` computes the per-video metrics from a generation manifest:
 
@@ -241,15 +263,19 @@ python /path/to/WildIcon/evaluation/compute_fvd.py \
 
 <!-- TODO: qualitative examples (example figure and video previews under assets/examples/). -->
 
-## License
+## 📜 License
 
 The code is released under the [Apache License 2.0](LICENSE). The WildlifeVid annotations, prompts and statistics that we created are released under [CC BY 4.0](annotations/LICENSE). The source videos remain under the terms of their original datasets.
 
-## Acknowledgements
-<!-- [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio) -->
-WildIcon code repo is built on DiffSynth-Studio. We thank the DiffSynth-Studio and Wan2.2 open-source communities for releasing the training and inference infrastructure that makes this research code possible.
+## 🙏 Acknowledgements
 
-## Citation
+This research was supported by the Ministry of Business, Innovation and Employment (MBIE) Smart Ideas project "Stoat Re-Identification Powered by Artificial Intelligence for Effective Pest Management in Aotearoa" (UOA2505).
+
+WildIcon code repo is built on [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio) and [Wan2.2](https://github.com/Wan-Video/Wan2.2). We thank the DiffSynth-Studio and Wan2.2 open-source communities for releasing the training and inference infrastructure that makes this research code possible. We also thank the authors of [DINOv3](https://github.com/facebookresearch/dinov3), [DreamSim](https://github.com/ssundaram21/dreamsim), [AMT](https://github.com/MCG-NKU/AMT) and [CLIP](https://github.com/openai/CLIP), which we use for identity encoding and evaluation, and the creators of [Animal-in-Motion](https://github.com/briannlongzhao/Animal-in-Motion), [Animal Kingdom](https://github.com/sutdcv/Animal-Kingdom), [LoTE-Animal](https://lote-animal.github.io/) and [MammalNet](https://mammal-net.github.io/), the source datasets of WildlifeVid.
+
+## 📝 Citation
+
+If you find WildIcon or WildlifeVid useful in your research, please cite:
 
 ```bibtex
 @inproceedings{li2026wildicon,
