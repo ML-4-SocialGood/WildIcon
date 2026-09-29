@@ -70,7 +70,7 @@ WildIcon/
 │   └── 📄 LICENSE                # CC BY 4.0
 ├── 📂 dataset/                   # Annotation checks, local training metadata, curation scripts
 ├── 📂 evaluation/                # Paper metrics and FVD
-├── 📂 assets/                    # README figures and badge
+├── 📂 assets/                    # README figures, badge and video examples
 ├── 📂 tools/                     # Overlay installer
 ├── 📄 requirements.txt           # Extra Python dependencies
 └── 📄 README.md
@@ -261,7 +261,78 @@ python /path/to/WildIcon/evaluation/compute_fvd.py \
   --output_json /path/to/fvd.json
 ```
 
-<!-- TODO: qualitative examples (example figure and video previews under assets/examples/). -->
+## Qualitative Examples
+
+<p align="center">
+  <img src="assets/figures/wildicon_examples.png" alt="WildIcon qualitative generation examples" width="80%">
+  <br>
+  <em><strong>Figure 4.</strong> Individual-consistent video generation examples.</em>
+</p>
+
+Reference images and GIF previews of WildIcon generations are shown below. Open the MP4 links for the full videos.
+
+<table>
+  <tr>
+    <th>Species</th>
+    <th>Reference</th>
+    <th>GIF preview</th>
+    <th>Full MP4</th>
+  </tr>
+  <tr>
+    <td>Bear</td>
+    <td><img src="assets/examples/reference_images/bear_01.png" alt="bear 01 reference image" width="140"></td>
+    <td><img src="assets/examples/previews/bear_01.gif" alt="bear 01 generated video preview" width="220"></td>
+    <td><a href="assets/examples/bear_01.mp4">bear_01.mp4</a></td>
+  </tr>
+  <tr>
+    <td>Elephant</td>
+    <td><img src="assets/examples/reference_images/elephant_01.png" alt="elephant 01 reference image" width="140"></td>
+    <td><img src="assets/examples/previews/elephant_01.gif" alt="elephant 01 generated video preview" width="220"></td>
+    <td><a href="assets/examples/elephant_01.mp4">elephant_01.mp4</a></td>
+  </tr>
+  <tr>
+    <td>Elephant</td>
+    <td><img src="assets/examples/reference_images/elephant_02.png" alt="elephant 02 reference image" width="140"></td>
+    <td><img src="assets/examples/previews/elephant_02.gif" alt="elephant 02 generated video preview" width="220"></td>
+    <td><a href="assets/examples/elephant_02.mp4">elephant_02.mp4</a></td>
+  </tr>
+  <tr>
+    <td>Hippo</td>
+    <td><img src="assets/examples/reference_images/hippo_01.png" alt="hippo 01 reference image" width="140"></td>
+    <td><img src="assets/examples/previews/hippo_01.gif" alt="hippo 01 generated video preview" width="220"></td>
+    <td><a href="assets/examples/hippo_01.mp4">hippo_01.mp4</a></td>
+  </tr>
+  <tr>
+    <td>Hyena</td>
+    <td><img src="assets/examples/reference_images/hyena_01.jpg" alt="hyena 01 reference image" width="140"></td>
+    <td><img src="assets/examples/previews/hyena_01.gif" alt="hyena 01 generated video preview" width="220"></td>
+    <td><a href="assets/examples/hyena_01.mp4">hyena_01.mp4</a></td>
+  </tr>
+  <tr>
+    <td>Rabbit</td>
+    <td><img src="assets/examples/reference_images/rabbit_01.png" alt="rabbit 01 reference image" width="140"></td>
+    <td><img src="assets/examples/previews/rabbit_01.gif" alt="rabbit 01 generated video preview" width="220"></td>
+    <td><a href="assets/examples/rabbit_01.mp4">rabbit_01.mp4</a></td>
+  </tr>
+  <tr>
+    <td>Raccoon</td>
+    <td><img src="assets/examples/reference_images/raccoon_01.png" alt="raccoon 01 reference image" width="140"></td>
+    <td><img src="assets/examples/previews/raccoon_01.gif" alt="raccoon 01 generated video preview" width="220"></td>
+    <td><a href="assets/examples/raccoon_01.mp4">raccoon_01.mp4</a></td>
+  </tr>
+  <tr>
+    <td>Sheep</td>
+    <td><img src="assets/examples/reference_images/sheep_01.png" alt="sheep 01 reference image" width="140"></td>
+    <td><img src="assets/examples/previews/sheep_01.gif" alt="sheep 01 generated video preview" width="220"></td>
+    <td><a href="assets/examples/sheep_01.mp4">sheep_01.mp4</a></td>
+  </tr>
+  <tr>
+    <td>Tiger</td>
+    <td><img src="assets/examples/reference_images/tiger_01.jpg" alt="tiger 01 reference image" width="140"></td>
+    <td><img src="assets/examples/previews/tiger_01.gif" alt="tiger 01 generated video preview" width="220"></td>
+    <td><a href="assets/examples/tiger_01.mp4">tiger_01.mp4</a></td>
+  </tr>
+</table>
 
 ## License
 
