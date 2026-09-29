@@ -1,0 +1,19 @@
+# WildIcon builds on the DiffSynth-Studio / Wan dependency stack.
+# Install DiffSynth-Studio first, then install these extra packages as needed.
+accelerate
+imageio
+numpy
+opencv-python
+pandas
+Pillow
+safetensors
+scikit-learn
+torch
+torchvision
+tqdm
+transformers
+
+# Optional evaluation components:
+# dreamsim
+# scipy
+# scikit-video

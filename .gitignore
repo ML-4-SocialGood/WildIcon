@@ -1,0 +1,22 @@
+# Local source data, masks, weights, generated runs and installed upstream code.
+/data/
+/datasets/
+/checkpoints/
+/models/
+/outputs/
+/logs/
+/vendor/
+*.safetensors
+*.pth
+*.pt
+*.ckpt
+*.local.csv
+*.rebuilt.csv
+.env
+.env.*
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.DS_Store
