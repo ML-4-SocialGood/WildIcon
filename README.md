@@ -42,18 +42,21 @@ A reference image → a generated video. Select **Watch video** to open the full
 <table>
   <tr>
     <td align="center" valign="top" width="33%" nowrap>
-      <strong>Bear</strong><br><br>
-      <img src="assets/examples/reference_images/bear_01.png" alt="Bear reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <img src="assets/examples/previews/bear_01.gif" alt="Bear generated video preview" width="112"><br><br>
+      <strong>Bear</strong>
+      <hr width="248" size="1">
+      <img src="assets/examples/reference_images/bear_01.png" alt="Bear reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/examples/previews/bear_01.png"><img src="assets/examples/previews/bear_01.webp" alt="Bear generated video preview" width="112"></picture><br><br>
       <a href="assets/examples/bear_01.mp4">Watch video</a>
     </td>
     <td align="center" valign="top" width="33%" nowrap>
-      <strong>Elephant</strong><br><br>
-      <img src="assets/examples/reference_images/elephant_01.png" alt="Elephant reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <img src="assets/examples/previews/elephant_01.gif" alt="Elephant generated video preview" width="112"><br><br>
+      <strong>Elephant</strong>
+      <hr width="248" size="1">
+      <img src="assets/examples/reference_images/elephant_01.png" alt="Elephant reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/examples/previews/elephant_01.png"><img src="assets/examples/previews/elephant_01.webp" alt="Elephant generated video preview" width="112"></picture><br><br>
       <a href="assets/examples/elephant_01.mp4">Watch video</a>
     </td>
     <td align="center" valign="top" width="33%" nowrap>
-      <strong>Raccoon</strong><br><br>
-      <img src="assets/examples/reference_images/raccoon_01.png" alt="Raccoon reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <img src="assets/examples/previews/raccoon_01.gif" alt="Raccoon generated video preview" width="112"><br><br>
+      <strong>Raccoon</strong>
+      <hr width="248" size="1">
+      <img src="assets/examples/reference_images/raccoon_01.png" alt="Raccoon reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/examples/previews/raccoon_01.png"><img src="assets/examples/previews/raccoon_01.webp" alt="Raccoon generated video preview" width="112"></picture><br><br>
       <a href="assets/examples/raccoon_01.mp4">Watch video</a>
     </td>
   </tr>
@@ -67,35 +70,41 @@ Six more examples complete the collection shown above.
 <table>
   <tr>
     <td align="center" valign="top" width="33%" nowrap>
-      <strong>Elephant</strong><br><br>
-      <img src="assets/examples/reference_images/elephant_02.png" alt="Elephant reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <img src="assets/examples/previews/elephant_02.gif" alt="Elephant generated video preview" width="112"><br><br>
+      <strong>Elephant</strong>
+      <hr width="248" size="1">
+      <img src="assets/examples/reference_images/elephant_02.png" alt="Elephant reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/examples/previews/elephant_02.png"><img src="assets/examples/previews/elephant_02.webp" alt="Elephant generated video preview" width="112"></picture><br><br>
       <a href="assets/examples/elephant_02.mp4">Watch video</a>
     </td>
     <td align="center" valign="top" width="33%" nowrap>
-      <strong>Hippo</strong><br><br>
-      <img src="assets/examples/reference_images/hippo_01.png" alt="Hippo reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <img src="assets/examples/previews/hippo_01.gif" alt="Hippo generated video preview" width="112"><br><br>
+      <strong>Hippo</strong>
+      <hr width="248" size="1">
+      <img src="assets/examples/reference_images/hippo_01.png" alt="Hippo reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/examples/previews/hippo_01.png"><img src="assets/examples/previews/hippo_01.webp" alt="Hippo generated video preview" width="112"></picture><br><br>
       <a href="assets/examples/hippo_01.mp4">Watch video</a>
     </td>
     <td align="center" valign="top" width="33%" nowrap>
-      <strong>Hyena</strong><br><br>
-      <img src="assets/examples/reference_images/hyena_01.jpg" alt="Hyena reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="86"> <img src="assets/examples/previews/hyena_01.gif" alt="Hyena generated video preview" width="112"><br><br>
+      <strong>Hyena</strong>
+      <hr width="248" size="1">
+      <img src="assets/examples/reference_images/hyena_01.jpg" alt="Hyena reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="86"> <picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/examples/previews/hyena_01.png"><img src="assets/examples/previews/hyena_01.webp" alt="Hyena generated video preview" width="112"></picture><br><br>
       <a href="assets/examples/hyena_01.mp4">Watch video</a>
     </td>
   </tr>
   <tr>
     <td align="center" valign="top" width="33%" nowrap>
-      <strong>Rabbit</strong><br><br>
-      <img src="assets/examples/reference_images/rabbit_01.png" alt="Rabbit reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <img src="assets/examples/previews/rabbit_01.gif" alt="Rabbit generated video preview" width="112"><br><br>
+      <strong>Rabbit</strong>
+      <hr width="248" size="1">
+      <img src="assets/examples/reference_images/rabbit_01.png" alt="Rabbit reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/examples/previews/rabbit_01.png"><img src="assets/examples/previews/rabbit_01.webp" alt="Rabbit generated video preview" width="112"></picture><br><br>
       <a href="assets/examples/rabbit_01.mp4">Watch video</a>
     </td>
     <td align="center" valign="top" width="33%" nowrap>
-      <strong>Sheep</strong><br><br>
-      <img src="assets/examples/reference_images/sheep_01.png" alt="Sheep reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <img src="assets/examples/previews/sheep_01.gif" alt="Sheep generated video preview" width="112"><br><br>
+      <strong>Sheep</strong>
+      <hr width="248" size="1">
+      <img src="assets/examples/reference_images/sheep_01.png" alt="Sheep reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/examples/previews/sheep_01.png"><img src="assets/examples/previews/sheep_01.webp" alt="Sheep generated video preview" width="112"></picture><br><br>
       <a href="assets/examples/sheep_01.mp4">Watch video</a>
     </td>
     <td align="center" valign="top" width="33%" nowrap>
-      <strong>Tiger</strong><br><br>
-      <img src="assets/examples/reference_images/tiger_01.jpg" alt="Tiger reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="58"> <img src="assets/examples/previews/tiger_01.gif" alt="Tiger generated video preview" width="112"><br><br>
+      <strong>Tiger</strong>
+      <hr width="248" size="1">
+      <img src="assets/examples/reference_images/tiger_01.jpg" alt="Tiger reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="58"> <picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/examples/previews/tiger_01.png"><img src="assets/examples/previews/tiger_01.webp" alt="Tiger generated video preview" width="112"></picture><br><br>
       <a href="assets/examples/tiger_01.mp4">Watch video</a>
     </td>
   </tr>
