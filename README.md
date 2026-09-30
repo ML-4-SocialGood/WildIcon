@@ -37,27 +37,27 @@ WildIcon studies wildlife video generation from a reference image and a motion p
 
 ## Examples
 
-A reference image → a generated video. Select **Watch video** to open the full MP4.
+A reference image → an animated preview. Click the preview or **▶ Watch video** to play the full MP4.
 
 <table>
   <tr>
     <td align="center" valign="top" width="33%" nowrap>
       <strong>Bear</strong>
       <hr width="248" size="1">
-      <img src="assets/examples/reference_images/bear_01.png" alt="Bear reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/examples/previews/bear_01.png"><img src="assets/examples/previews/bear_01.webp" alt="Bear generated video preview" width="112"></picture><br><br>
-      <a href="assets/examples/bear_01.mp4">Watch video</a>
+      <img src="assets/examples/reference_images/bear_01.png" alt="Bear reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <a href="https://cdn.jsdelivr.net/gh/ML-4-SocialGood/WildIcon@d74a45106efcfb9828722fc29ec11457078693e6/assets/examples/bear_01.mp4"><img src="assets/examples/previews/bear_01.webp" alt="Bear generated video preview" width="112"></a><br><br>
+      <a href="https://cdn.jsdelivr.net/gh/ML-4-SocialGood/WildIcon@d74a45106efcfb9828722fc29ec11457078693e6/assets/examples/bear_01.mp4">▶ Watch video</a>
     </td>
     <td align="center" valign="top" width="33%" nowrap>
       <strong>Elephant</strong>
       <hr width="248" size="1">
-      <img src="assets/examples/reference_images/elephant_01.png" alt="Elephant reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/examples/previews/elephant_01.png"><img src="assets/examples/previews/elephant_01.webp" alt="Elephant generated video preview" width="112"></picture><br><br>
-      <a href="assets/examples/elephant_01.mp4">Watch video</a>
+      <img src="assets/examples/reference_images/elephant_01.png" alt="Elephant reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <a href="https://cdn.jsdelivr.net/gh/ML-4-SocialGood/WildIcon@d74a45106efcfb9828722fc29ec11457078693e6/assets/examples/elephant_01.mp4"><img src="assets/examples/previews/elephant_01.webp" alt="Elephant generated video preview" width="112"></a><br><br>
+      <a href="https://cdn.jsdelivr.net/gh/ML-4-SocialGood/WildIcon@d74a45106efcfb9828722fc29ec11457078693e6/assets/examples/elephant_01.mp4">▶ Watch video</a>
     </td>
     <td align="center" valign="top" width="33%" nowrap>
       <strong>Raccoon</strong>
       <hr width="248" size="1">
-      <img src="assets/examples/reference_images/raccoon_01.png" alt="Raccoon reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/examples/previews/raccoon_01.png"><img src="assets/examples/previews/raccoon_01.webp" alt="Raccoon generated video preview" width="112"></picture><br><br>
-      <a href="assets/examples/raccoon_01.mp4">Watch video</a>
+      <img src="assets/examples/reference_images/raccoon_01.png" alt="Raccoon reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <a href="https://cdn.jsdelivr.net/gh/ML-4-SocialGood/WildIcon@d74a45106efcfb9828722fc29ec11457078693e6/assets/examples/raccoon_01.mp4"><img src="assets/examples/previews/raccoon_01.webp" alt="Raccoon generated video preview" width="112"></a><br><br>
+      <a href="https://cdn.jsdelivr.net/gh/ML-4-SocialGood/WildIcon@d74a45106efcfb9828722fc29ec11457078693e6/assets/examples/raccoon_01.mp4">▶ Watch video</a>
     </td>
   </tr>
 </table>
@@ -72,40 +72,40 @@ Six more examples complete the collection shown above.
     <td align="center" valign="top" width="33%" nowrap>
       <strong>Elephant</strong>
       <hr width="248" size="1">
-      <img src="assets/examples/reference_images/elephant_02.png" alt="Elephant reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/examples/previews/elephant_02.png"><img src="assets/examples/previews/elephant_02.webp" alt="Elephant generated video preview" width="112"></picture><br><br>
-      <a href="assets/examples/elephant_02.mp4">Watch video</a>
+      <img src="assets/examples/reference_images/elephant_02.png" alt="Elephant reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <a href="https://cdn.jsdelivr.net/gh/ML-4-SocialGood/WildIcon@d74a45106efcfb9828722fc29ec11457078693e6/assets/examples/elephant_02.mp4"><img src="assets/examples/previews/elephant_02.webp" alt="Elephant generated video preview" width="112"></a><br><br>
+      <a href="https://cdn.jsdelivr.net/gh/ML-4-SocialGood/WildIcon@d74a45106efcfb9828722fc29ec11457078693e6/assets/examples/elephant_02.mp4">▶ Watch video</a>
     </td>
     <td align="center" valign="top" width="33%" nowrap>
       <strong>Hippo</strong>
       <hr width="248" size="1">
-      <img src="assets/examples/reference_images/hippo_01.png" alt="Hippo reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/examples/previews/hippo_01.png"><img src="assets/examples/previews/hippo_01.webp" alt="Hippo generated video preview" width="112"></picture><br><br>
-      <a href="assets/examples/hippo_01.mp4">Watch video</a>
+      <img src="assets/examples/reference_images/hippo_01.png" alt="Hippo reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <a href="https://cdn.jsdelivr.net/gh/ML-4-SocialGood/WildIcon@d74a45106efcfb9828722fc29ec11457078693e6/assets/examples/hippo_01.mp4"><img src="assets/examples/previews/hippo_01.webp" alt="Hippo generated video preview" width="112"></a><br><br>
+      <a href="https://cdn.jsdelivr.net/gh/ML-4-SocialGood/WildIcon@d74a45106efcfb9828722fc29ec11457078693e6/assets/examples/hippo_01.mp4">▶ Watch video</a>
     </td>
     <td align="center" valign="top" width="33%" nowrap>
       <strong>Hyena</strong>
       <hr width="248" size="1">
-      <img src="assets/examples/reference_images/hyena_01.jpg" alt="Hyena reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="86"> <picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/examples/previews/hyena_01.png"><img src="assets/examples/previews/hyena_01.webp" alt="Hyena generated video preview" width="112"></picture><br><br>
-      <a href="assets/examples/hyena_01.mp4">Watch video</a>
+      <img src="assets/examples/reference_images/hyena_01.jpg" alt="Hyena reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="86"> <a href="https://cdn.jsdelivr.net/gh/ML-4-SocialGood/WildIcon@d74a45106efcfb9828722fc29ec11457078693e6/assets/examples/hyena_01.mp4"><img src="assets/examples/previews/hyena_01.webp" alt="Hyena generated video preview" width="112"></a><br><br>
+      <a href="https://cdn.jsdelivr.net/gh/ML-4-SocialGood/WildIcon@d74a45106efcfb9828722fc29ec11457078693e6/assets/examples/hyena_01.mp4">▶ Watch video</a>
     </td>
   </tr>
   <tr>
     <td align="center" valign="top" width="33%" nowrap>
       <strong>Rabbit</strong>
       <hr width="248" size="1">
-      <img src="assets/examples/reference_images/rabbit_01.png" alt="Rabbit reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/examples/previews/rabbit_01.png"><img src="assets/examples/previews/rabbit_01.webp" alt="Rabbit generated video preview" width="112"></picture><br><br>
-      <a href="assets/examples/rabbit_01.mp4">Watch video</a>
+      <img src="assets/examples/reference_images/rabbit_01.png" alt="Rabbit reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <a href="https://cdn.jsdelivr.net/gh/ML-4-SocialGood/WildIcon@d74a45106efcfb9828722fc29ec11457078693e6/assets/examples/rabbit_01.mp4"><img src="assets/examples/previews/rabbit_01.webp" alt="Rabbit generated video preview" width="112"></a><br><br>
+      <a href="https://cdn.jsdelivr.net/gh/ML-4-SocialGood/WildIcon@d74a45106efcfb9828722fc29ec11457078693e6/assets/examples/rabbit_01.mp4">▶ Watch video</a>
     </td>
     <td align="center" valign="top" width="33%" nowrap>
       <strong>Sheep</strong>
       <hr width="248" size="1">
-      <img src="assets/examples/reference_images/sheep_01.png" alt="Sheep reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/examples/previews/sheep_01.png"><img src="assets/examples/previews/sheep_01.webp" alt="Sheep generated video preview" width="112"></picture><br><br>
-      <a href="assets/examples/sheep_01.mp4">Watch video</a>
+      <img src="assets/examples/reference_images/sheep_01.png" alt="Sheep reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="112"> <a href="https://cdn.jsdelivr.net/gh/ML-4-SocialGood/WildIcon@d74a45106efcfb9828722fc29ec11457078693e6/assets/examples/sheep_01.mp4"><img src="assets/examples/previews/sheep_01.webp" alt="Sheep generated video preview" width="112"></a><br><br>
+      <a href="https://cdn.jsdelivr.net/gh/ML-4-SocialGood/WildIcon@d74a45106efcfb9828722fc29ec11457078693e6/assets/examples/sheep_01.mp4">▶ Watch video</a>
     </td>
     <td align="center" valign="top" width="33%" nowrap>
       <strong>Tiger</strong>
       <hr width="248" size="1">
-      <img src="assets/examples/reference_images/tiger_01.jpg" alt="Tiger reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="58"> <picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/examples/previews/tiger_01.png"><img src="assets/examples/previews/tiger_01.webp" alt="Tiger generated video preview" width="112"></picture><br><br>
-      <a href="assets/examples/tiger_01.mp4">Watch video</a>
+      <img src="assets/examples/reference_images/tiger_01.jpg" alt="Tiger reference image" width="112"> <img src="assets/icons/arrow-right.svg" alt="→" width="16" height="58"> <a href="https://cdn.jsdelivr.net/gh/ML-4-SocialGood/WildIcon@d74a45106efcfb9828722fc29ec11457078693e6/assets/examples/tiger_01.mp4"><img src="assets/examples/previews/tiger_01.webp" alt="Tiger generated video preview" width="112"></a><br><br>
+      <a href="https://cdn.jsdelivr.net/gh/ML-4-SocialGood/WildIcon@d74a45106efcfb9828722fc29ec11457078693e6/assets/examples/tiger_01.mp4">▶ Watch video</a>
     </td>
   </tr>
 </table>
