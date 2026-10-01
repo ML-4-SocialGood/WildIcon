@@ -1,0 +1,60 @@
+WildIcon
+Generating the Wild: Individual-Consistent Image-to-Video Generation for Wildlife
+
+Licensing scope
+---------------
+Except for the third-party portions identified below, WildIcon source code,
+including the WildIcon additions and modifications, is licensed under the GNU
+Lesser General Public License, version 3 or (at your option) any later version
+(SPDX: LGPL-3.0-or-later).
+
+The full LGPLv3 text is in LICENSE. The GPLv3 text incorporated by LGPLv3 is in
+COPYING. WildIcon additions and modifications are attributed to the WildIcon
+authors, Copyright (C) 2026. Existing third-party rights and notices are retained.
+
+DiffSynth-Studio
+---------------
+Project: DiffSynth-Studio
+Source: https://github.com/modelscope/DiffSynth-Studio
+Pinned revision: ba0626e38f7b8c7908e4f6f597d38282ebba0d38
+Upstream license: Apache License, Version 2.0 (SPDX: Apache-2.0)
+License copy: LICENSES/Apache-2.0.txt
+
+The upstream portions of the following modified files retain their Apache-2.0
+license. WildIcon additions and modifications in these files are licensed under
+LGPL-3.0-or-later. The file headers identify both scopes.
+
+Modified upstream files, relative to the WildIcon repository root:
+
+  framework/diffsynth/core/data/operators.py
+  framework/diffsynth/diffusion/logger.py
+  framework/diffsynth/diffusion/parsers.py
+  framework/diffsynth/diffusion/runner.py
+  framework/diffsynth/pipelines/wan_video.py
+  framework/examples/wanvideo/model_training/train.py
+
+The framework/ prefix is omitted when these files are installed into a
+DiffSynth-Studio checkout. tools/apply_overlay.sh also installs the license
+texts and this notice under LICENSES/WildIcon/ in that checkout.
+
+The pinned upstream revision has no root NOTICE file. This NOTICE is WildIcon's
+own third-party attribution and modification manifest; it does not replace or
+modify the Apache License 2.0 terms.
+
+Other third-party materials
+--------------------------
+Separately installed dependencies, pretrained models, and model weights remain
+subject to their respective licenses and usage terms. The WildIcon code license
+does not change those terms.
+
+Original WildlifeVid annotation contributions that the WildIcon authors have
+authority to license are released under CC BY 4.0. See annotations/LICENSE and
+annotations/README.md for the scope of that grant and the source references.
+Source-derived metadata, source videos, reference images, and other third-party
+materials, including source-derived README assets, retain the licenses and
+terms of their respective sources.
+
+Licensing transition
+--------------------
+Earlier published WildIcon revisions were distributed under Apache-2.0. This
+licensing change does not revoke rights already granted for those revisions.

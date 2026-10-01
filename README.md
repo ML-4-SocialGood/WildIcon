@@ -17,8 +17,8 @@
 <p>
 <a href="https://openreview.net/forum?id=Twfrs5sTBH"><img src="assets/badges/neurips-2026.svg" alt="NeurIPS 2026 Paper"></a>
 <a href="annotations/"><img src="https://img.shields.io/badge/WildlifeVid-Annotations-1A7A4A?style=for-the-badge" alt="WildlifeVid annotations"></a>
-<a href="LICENSE"><img src="https://img.shields.io/badge/Code-Apache%202.0-2F6DB5?style=for-the-badge&logo=apache&logoColor=white" alt="Code license: Apache 2.0"></a>
-<a href="annotations/LICENSE"><img src="https://img.shields.io/badge/Data-CC%20BY%204.0-EF9421?style=for-the-badge&logo=creativecommons&logoColor=white" alt="Annotation license: CC BY 4.0"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/Code-LGPL%203.0%20or%20later-2F6DB5?style=for-the-badge&logo=gnu&logoColor=white" alt="Code license: LGPL 3.0 or later"></a>
+<a href="annotations/README.md"><img src="https://img.shields.io/badge/Data-CC%20BY%204.0-EF9421?style=for-the-badge&logo=creativecommons&logoColor=white" alt="Original annotation contributions: CC BY 4.0"></a>
 </p>
 
 <p>
@@ -175,7 +175,7 @@ Source composition:
 
 ### Annotations
 
-The annotations are in [`annotations/WildlifeVid.csv`](annotations/WildlifeVid.csv), one row per clip. We do not redistribute the source videos or raw frames; obtain them from the original datasets under their terms of use.
+The annotations are in [`annotations/WildlifeVid.csv`](annotations/WildlifeVid.csv), one row per clip. The annotation tables contain no source videos or raw frames; obtain them from the original datasets under their terms of use. See the [annotation licensing scope and field provenance](annotations/README.md) for the distinction between our contributions and source-derived content.
 
 <details>
 <summary><b>Column reference</b></summary>
@@ -224,11 +224,16 @@ WildIcon/
 ├── 📂 annotations/               # WildlifeVid annotations (no videos or frames)
 │   ├── 📄 WildlifeVid.csv        # One row per clip
 │   ├── 📂 source/                # Per-source tables that WildlifeVid.csv is merged from
-│   └── 📄 LICENSE                # CC BY 4.0
+│   ├── 📄 LICENSE                # CC BY 4.0
+│   └── 📄 README.md              # Annotation licensing scope and field provenance
 ├── 📂 dataset/                   # Annotation checks, local training metadata, curation scripts
 ├── 📂 evaluation/                # Paper metrics and FVD
 ├── 📂 assets/                    # README figures, badge and video examples
 ├── 📂 tools/                     # Overlay installer
+├── 📄 LICENSE                    # LGPLv3 text; WildIcon uses v3 or later
+├── 📄 COPYING                    # GPLv3 text incorporated by LGPLv3
+├── 📄 NOTICE                     # Third-party attribution and modification manifest
+├── 📂 LICENSES/                  # Preserved Apache 2.0 license
 ├── 📄 requirements.txt           # Extra Python dependencies
 └── 📄 README.md
 ```
@@ -396,7 +401,9 @@ If you find WildIcon or WildlifeVid useful in your research, please cite:
 
 ## License
 
-The code is released under the [Apache License 2.0](LICENSE). The WildlifeVid annotations, prompts and statistics that we created are released under [CC BY 4.0](annotations/LICENSE). The source videos remain under the terms of their original datasets.
+**Code.** Except for third-party components identified in [`NOTICE`](NOTICE), WildIcon code and our modifications are released under the GNU Lesser General Public License v3.0 or later (`LGPL-3.0-or-later`). Modified files derived from DiffSynth-Studio retain the applicable Apache License 2.0 notices; see [`NOTICE`](NOTICE) and [`LICENSES/Apache-2.0.txt`](LICENSES/Apache-2.0.txt). The full LGPLv3 and GPLv3 texts are in [`LICENSE`](LICENSE) and [`COPYING`](COPYING).
+
+**Annotations.** Original annotations, prompts, and metadata created by the WildIcon authors are released under [CC BY 4.0](annotations/LICENSE). Source-derived metadata, source videos, reference images, and other third-party materials remain subject to the licenses and terms of their respective sources. See [`annotations/README.md`](annotations/README.md) for the licensing scope and field provenance.
 
 ## Acknowledgements
 

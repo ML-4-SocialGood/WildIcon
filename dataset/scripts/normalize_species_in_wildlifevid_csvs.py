@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# Copyright (C) 2026 WildIcon authors.
+#
+# This file is part of WildIcon and is licensed under the GNU Lesser
+# General Public License, version 3 or (at your option) any later version.
+# Distributed without any warranty; see WildIcon LICENSE and COPYING.
+# Installed overlays include these terms under LICENSES/WildIcon/.
+
 import csv
 import os
 import re

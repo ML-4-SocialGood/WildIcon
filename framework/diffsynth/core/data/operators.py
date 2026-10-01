@@ -1,3 +1,14 @@
+# SPDX-License-Identifier: Apache-2.0 AND LGPL-3.0-or-later
+#
+# Based on DiffSynth-Studio revision ba0626e38f7b8c7908e4f6f597d38282ebba0d38.
+# Upstream file: diffsynth/core/data/operators.py
+# Modified for WildIcon by the WildIcon authors.
+# Upstream portions retain the Apache License, Version 2.0.
+# WildIcon additions and modifications: Copyright (C) 2026 WildIcon authors;
+# licensed under GNU LGPL version 3 or (at your option) any later version.
+# See WildIcon NOTICE, LICENSE, COPYING, and LICENSES/Apache-2.0.txt;
+# installed overlays include these terms under LICENSES/WildIcon/.
+
 import math
 import torch, torchvision, imageio, os
 import imageio.v3 as iio
