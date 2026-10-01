@@ -175,7 +175,7 @@ Source composition:
 
 ### Annotations
 
-The annotations are in [`annotations/WildlifeVid.csv`](annotations/WildlifeVid.csv), one row per clip. The annotation tables contain no source videos or raw frames; obtain them from the original datasets under their terms of use. See the [annotation licensing scope and field provenance](annotations/README.md) for the distinction between our contributions and source-derived content.
+The annotations are in [`annotations/WildlifeVid.csv`](annotations/WildlifeVid.csv), one row per clip, with identity labels, prompts, and source paths. Obtain source media from the original datasets under their terms of use. See the [annotation licensing scope and field provenance](annotations/README.md) for details.
 
 <details>
 <summary><b>Column reference</b></summary>
@@ -191,8 +191,8 @@ The annotations are in [`annotations/WildlifeVid.csv`](annotations/WildlifeVid.c
 | `identity`, `identity_str` | Identity label within the species |
 | `global_identity` | Identity label across WildlifeVid |
 | `reference_image` | Reference frame path, relative to the local data root |
-| `segmented_image` | Empty: foreground images are prepared locally (see [Training](#training)) |
-| `segment_prompt`, `segment_status`, `segment_score` | Record of our local foreground-extraction pass; the foreground images themselves are not released |
+| `segmented_image` | Foreground image path, populated when preparing local training metadata (see [Training](#training)) |
+| `segment_prompt`, `segment_status`, `segment_score` | Metadata from our foreground-preparation workflow |
 | `source_*` | The row's species and identity ids in its per-source table |
 
 </details>
@@ -207,7 +207,7 @@ Species labels keep each source's naming. Merging case variants and three synony
 
 ## Getting Started
 
-Set up the code and local data, then train an identity adapter, generate videos, and evaluate the results.
+This repository provides WildIcon training and inference code, generation configs, evaluation utilities, and WildlifeVid annotations. Follow the workflow below to set up the code and local data, train an identity adapter, generate videos, and evaluate the results.
 
 [Installation](#installation) · [Training](#training) · [Inference](#inference) · [Evaluation](#evaluation)
 
@@ -221,15 +221,16 @@ WildIcon/
 │   ├── 📂 diffsynth/             # Modified / added DiffSynth modules
 │   ├── 📂 examples/              # Training and inference entry points
 │   └── 📄 UPSTREAM_REVISION      # DiffSynth-Studio commit the overlay targets
-├── 📂 annotations/               # WildlifeVid annotations (no videos or frames)
+├── 📂 annotations/               # WildlifeVid annotation tables
 │   ├── 📄 WildlifeVid.csv        # One row per clip
 │   ├── 📂 source/                # Per-source tables that WildlifeVid.csv is merged from
 │   ├── 📄 LICENSE                # CC BY 4.0
 │   └── 📄 README.md              # Annotation licensing scope and field provenance
 ├── 📂 dataset/                   # Annotation checks, local training metadata, curation scripts
 ├── 📂 evaluation/                # Paper metrics and FVD
+├── 📂 configs/generation/        # Tiger, Nyala, Cow, Panda and Stoat generation settings
 ├── 📂 assets/                    # README figures, badge and video examples
-├── 📂 tools/                     # Overlay installer
+├── 📂 tools/                     # Overlay installer and config-driven video generation
 ├── 📄 LICENSE                    # LGPLv3 text; WildIcon uses v3 or later
 ├── 📄 COPYING                    # GPLv3 text incorporated by LGPLv3
 ├── 📄 NOTICE                     # Third-party attribution and modification manifest
@@ -276,7 +277,7 @@ Wan2.2-I2V-A14B/
 
 ### Training
 
-Training reads the source videos, reference frames and foreground images from a local data root. The foreground images are not distributed. Produce one per reference image, i.e. the reference image with the background removed. Then write a local training table that points to them:
+Training reads the source videos, reference frames and foreground images from a local data root. Prepare one foreground image per reference by removing its background, then write a local training table that points to these files:
 
 ```bash
 python /path/to/WildIcon/dataset/prepare_local_metadata.py \
@@ -286,7 +287,7 @@ python /path/to/WildIcon/dataset/prepare_local_metadata.py \
   --foreground_root /path/to/foregrounds
 ```
 
-`--foreground_root` expects a directory that mirrors the relative `reference_image` paths. Alternatively, `--segmentation_csv` takes a `video,segmented_image` mapping. The script writes nothing if any video, reference or foreground file is missing.
+`--foreground_root` expects a directory that mirrors the relative `reference_image` paths. Alternatively, `--segmentation_csv` takes a `video,segmented_image` mapping. The script validates all video, reference and foreground paths before writing the local training table.
 
 The main paper training path uses Wan2.2-I2V-A14B with external foregrounds, a DINOv3 identity encoder, foreground-filtered high-frequency tokens, and the frozen feature-space identity loss. The launcher defaults follow the paper's implementation details: 81 frames at 832×480, Adam with learning rate 1e-4, and a per-GPU batch size of 1 with gradient accumulation over 4 steps.
 
@@ -305,6 +306,8 @@ bash examples/wanvideo/model_training/full/Wan2.2-I2V-A14B-WildIcon-WildlifeVid.
 ```
 
 `TRAIN_STAGE` is `high_noise`, `low_noise`, or `both`, which trains the high-noise stage and then starts the low-noise stage from its latest checkpoint.
+
+The launcher saves adapter checkpoints in its output directories for use with the inference entry point below.
 
 For the lighter TI2V-5B variant:
 
@@ -330,20 +333,47 @@ Important knobs:
 
 Generate videos from a reference image, its foreground image, and motion prompts.
 
-Run the inference script from the DiffSynth-Studio root. `--prompt_json` maps each reference image file name to a list of prompts, e.g. `{"tiger_01.png": ["The tiger walks slowly forward.", "..."]}`. The foreground images in `--segmented_dir` use the same file names as the references.
+Load a trained WildIcon adapter checkpoint alongside the frozen Wan base model and DINOv3 identity encoder. The [training launcher](#training) produces adapter checkpoints; obtain the Wan and DINOv3 weights from their original sources as described in [Installation](#installation).
 
-```bash
-python examples/wanvideo/model_training/validate_full/Wan2.2-I2V-A14B-WildIcon-WildlifeEval.py \
-  --stage_mode low_only \
-  --low_checkpoint_dir /path/to/low_noise_checkpoints \
-  --reference_dir /path/to/reference_images \
-  --segmented_dir /path/to/segmented_images \
-  --prompt_json /path/to/prompts.json \
-  --local_model_root /path/to/Wan2.2-I2V-A14B \
-  --output_root /path/to/generated
+The five configs use the shared WildIcon generation model and default parameters, organized by downstream ReID dataset.
+
+| Animal / dataset | Generation config |
+| --- | --- |
+| Tiger / ATRW | [`tiger.json`](configs/generation/tiger.json) |
+| Nyala | [`nyala.json`](configs/generation/nyala.json) |
+| Cow / CowDataset | [`cow.json`](configs/generation/cow.json) |
+| Panda / IPanda50 | [`panda.json`](configs/generation/panda.json) |
+| Stoat | [`stoat.json`](configs/generation/stoat.json) |
+
+`--prompt-json` maps each reference file name to two motion prompts, for example:
+
+```json
+{
+  "tiger_01.png": [
+    "The tiger takes a few slow steps, keeping its visible side facing the camera.",
+    "The tiger makes a small head movement while its visible coat markings stay in view."
+  ]
+}
 ```
 
-Each run loads one adapter checkpoint at a time. `--stage_mode` selects which checkpoint directory is rendered: `low_only` (default), `high_only`, or `both`. Videos are written to `<output_root>/<stage>/<checkpoint>/generated_videos/` as 81 frames at 832×480 and 16 FPS. A `generation_manifest.csv` next to them records the exact reference image and prompt of each video. `Wan2.2-TI2V-5B-WildIcon-WildlifeEval.py` in the same directory is the TI2V-5B counterpart.
+The foreground images use the same file names as the references. Run from the WildIcon repository root after applying the current overlay:
+
+```bash
+python tools/generate.py \
+  --config configs/generation/tiger.json \
+  --diffsynth-root /path/to/DiffSynth-Studio \
+  --checkpoint /path/to/wildicon_adapter.safetensors \
+  --reference-dir /path/to/reference_images \
+  --segmented-dir /path/to/segmented_images \
+  --prompt-json /path/to/prompts.json \
+  --wan-model-root /path/to/Wan2.2-I2V-A14B \
+  --dino-model /path/to/dinov3-vitl16-pretrain-lvd1689m \
+  --output-dir /path/to/generated/tiger
+```
+
+The configs generate two 81-frame videos per reference at 832×480 and 16 FPS. Outputs are written to `<output-dir>/selected/<checkpoint>/generated_videos/`. The adjacent `generation_manifest.csv` records each video's reference, prompt and seed; `generation_config.json` records the resolved settings and checkpoint SHA-256. Add `--dry-run` to check the inputs before loading models, or `--num-gpus 4` to distribute generation across four GPUs. See [config usage and the downstream reference protocol](configs/generation/README.md) for preparing ReID inputs.
+
+The underlying A14B inference script also accepts `--checkpoint /path/to/wildicon_adapter.safetensors` directly. Its checkpoint-directory options remain available for validation. `Wan2.2-TI2V-5B-WildIcon-WildlifeEval.py` in the same directory is the TI2V-5B counterpart.
 
 ### Evaluation
 
@@ -353,7 +383,7 @@ Measure video quality, identity consistency, and prompt alignment using the refe
 
 ```bash
 python /path/to/WildIcon/evaluation/evaluate_generated_videos.py \
-  --manifest /path/to/generated/low_noise/<checkpoint>/generation_manifest.csv \
+  --manifest /path/to/generated/tiger/selected/<checkpoint>/generation_manifest.csv \
   --output_dir /path/to/eval_outputs \
   --compute_i2v_background \
   --compute_motion_smoothness \
@@ -377,7 +407,7 @@ FVD is computed between a directory of real videos and one or more directories o
 ```bash
 python /path/to/WildIcon/evaluation/compute_fvd.py \
   --real_dir /path/to/real_videos \
-  --gen_dirs /path/to/generated/low_noise/<checkpoint>/generated_videos \
+  --gen_dirs /path/to/generated/tiger/selected/<checkpoint>/generated_videos \
   --gen_names WildIcon \
   --output_json /path/to/fvd.json
 ```

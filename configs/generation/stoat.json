@@ -1,0 +1,42 @@
+{
+  "license": "LGPL-3.0-or-later",
+  "dataset": "Stoat",
+  "animal": "stoat",
+  "model": "Wan2.2-I2V-A14B",
+  "videos_per_reference": 2,
+  "generation": {
+    "height": 480,
+    "width": 832,
+    "num_frames": 81,
+    "fps": 16,
+    "num_inference_steps": 50,
+    "guidance_scale": 5,
+    "seed": 1,
+    "quality": 5
+  },
+  "identity_adapter": {
+    "selected_block_ids": [
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39
+    ],
+    "highpass_sigma": 3,
+    "encoder_hidden_dim": 128,
+    "encoder_token_dim": 256,
+    "token_grid_size": [
+      4,
+      4
+    ]
+  }
+}

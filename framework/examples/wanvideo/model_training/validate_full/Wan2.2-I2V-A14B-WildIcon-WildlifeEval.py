@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import csv
 import glob
+import hashlib
 import json
 import os
 import re
@@ -45,7 +46,8 @@ DEFAULT_NEGATIVE_PROMPT = (
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Generate wildlife benchmark videos for each A14B WildIcon checkpoint.")
+    parser = argparse.ArgumentParser(description="Generate wildlife videos with an A14B WildIcon adapter checkpoint.")
+    parser.add_argument("--checkpoint", type=str, default=None, help="One adapter checkpoint to load instead of scanning checkpoint directories.")
     parser.add_argument("--high_checkpoint_dir", type=str, default=DEFAULT_HIGH_CHECKPOINT_DIR, help="Directory containing high-noise WildIcon adapter checkpoints.")
     parser.add_argument("--low_checkpoint_dir", type=str, default=DEFAULT_LOW_CHECKPOINT_DIR, help="Directory containing low-noise WildIcon adapter checkpoints.")
     parser.add_argument("--high_checkpoint_glob", type=str, default="step-*.safetensors", help="Checkpoint glob under --high_checkpoint_dir.")
@@ -242,6 +244,22 @@ def collect_checkpoint_paths(checkpoint_dir: Path, pattern: str) -> list[Path]:
     return sorted(paths, key=checkpoint_sort_key)
 
 
+def collect_checkpoint_jobs(args: argparse.Namespace) -> list[tuple[str, Path]]:
+    if args.checkpoint is not None:
+        checkpoint_path = Path(args.checkpoint).resolve()
+        if not checkpoint_path.is_file() or checkpoint_path.stat().st_size == 0:
+            raise FileNotFoundError(f"Checkpoint not found or empty: {checkpoint_path}")
+        return [("selected", checkpoint_path)]
+    jobs = []
+    if args.stage_mode in ("high_only", "both"):
+        jobs.extend(("high_noise", path.resolve()) for path in collect_checkpoint_paths(Path(args.high_checkpoint_dir), args.high_checkpoint_glob))
+    if args.stage_mode in ("low_only", "both"):
+        jobs.extend(("low_noise", path.resolve()) for path in collect_checkpoint_paths(Path(args.low_checkpoint_dir), args.low_checkpoint_glob))
+    if not jobs:
+        raise RuntimeError("No checkpoints matched the requested stage / glob configuration.")
+    return jobs
+
+
 def load_prompt_records(args: argparse.Namespace) -> list[dict[str, str | int]]:
     reference_dir = Path(args.reference_dir).resolve()
     segmented_dir = Path(args.segmented_dir).resolve() if args.segmented_dir is not None else None
@@ -355,6 +373,31 @@ def merge_rank_manifests(checkpoint_output_dir: Path, world_size: int) -> None:
     write_manifest(merged_rows, checkpoint_output_dir)
 
 
+def video_matches_settings(path: Path, args: argparse.Namespace) -> bool:
+    if not path.is_file() or path.stat().st_size == 0:
+        return False
+    import cv2
+
+    capture = cv2.VideoCapture(str(path))
+    try:
+        if not capture.isOpened():
+            return False
+        metadata_matches = (
+            int(capture.get(cv2.CAP_PROP_FRAME_COUNT)) == args.num_frames
+            and int(capture.get(cv2.CAP_PROP_FRAME_WIDTH)) == args.width
+            and int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT)) == args.height
+            and abs(capture.get(cv2.CAP_PROP_FPS) - args.fps) < 0.01
+        )
+        if not metadata_matches:
+            return False
+        first_ok, _ = capture.read()
+        capture.set(cv2.CAP_PROP_POS_FRAMES, args.num_frames - 1)
+        last_ok, _ = capture.read()
+        return first_ok and last_ok
+    finally:
+        capture.release()
+
+
 def generate_for_checkpoint(
     pipe: WanVideoPipeline,
     checkpoint_path: Path,
@@ -384,6 +427,22 @@ def generate_for_checkpoint(
         raise ValueError(f"Incompatible adapter checkpoint: missing={sorted(missing_trainable)}, unexpected={unexpected}")
     pipe.wildicon_adapter.eval()
 
+    if is_main_process(rank):
+        checkpoint_hash = hashlib.sha256()
+        with checkpoint_path.open("rb") as file:
+            for chunk in iter(lambda: file.read(1024 * 1024), b""):
+                checkpoint_hash.update(chunk)
+        run_config = {
+            "checkpoint_path": str(checkpoint_path),
+            "checkpoint_sha256": checkpoint_hash.hexdigest(),
+            "arguments": vars(args),
+            "prompt_records": prompt_records,
+        }
+        (checkpoint_output_dir / "generation_config.json").write_text(
+            json.dumps(run_config, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+        )
+    barrier_if_distributed()
+
     manifest_rows: list[dict[str, str | int]] = []
     local_prompt_records = shard_prompt_records(prompt_records, rank, world_size)
     for local_index, record in enumerate(local_prompt_records):
@@ -399,7 +458,7 @@ def generate_for_checkpoint(
         video_name = f"{stem}__p{prompt_index:02d}__seed{seed}.mp4"
         video_path = generated_video_dir / video_name
 
-        if not (args.skip_existing and video_path.is_file()):
+        if not (args.skip_existing and video_matches_settings(video_path, args)):
             input_image = Image.open(reference_path).convert("RGB")
             reference_image = Image.open(reference_path).convert("RGB")
             segmented_image = None if segmented_path is None else Image.open(segmented_path).convert("RGB")
@@ -452,6 +511,7 @@ def main() -> None:
     args.generation_device = resolve_generation_device(args.generation_device, local_rank, world_size)
 
     try:
+        checkpoint_jobs = collect_checkpoint_jobs(args)
         output_root = Path(args.output_root)
         if is_main_process(rank):
             output_root.mkdir(parents=True, exist_ok=True)
@@ -461,22 +521,7 @@ def main() -> None:
         if not prompt_records:
             raise RuntimeError("No prompt records were loaded.")
 
-        high_checkpoint_paths = collect_checkpoint_paths(Path(args.high_checkpoint_dir), args.high_checkpoint_glob)
-        low_checkpoint_paths = collect_checkpoint_paths(Path(args.low_checkpoint_dir), args.low_checkpoint_glob)
-
-        if args.stage_mode == "high_only":
-            checkpoint_jobs = [("high_noise", path) for path in high_checkpoint_paths]
-        elif args.stage_mode == "low_only":
-            checkpoint_jobs = [("low_noise", path) for path in low_checkpoint_paths]
-        else:
-            checkpoint_jobs = [("high_noise", path) for path in high_checkpoint_paths] + [("low_noise", path) for path in low_checkpoint_paths]
-
-        if not checkpoint_jobs:
-            raise RuntimeError("No checkpoints matched the requested stage / glob configuration.")
-
-        log_info(f"[INFO] stage_mode     : {args.stage_mode}", rank=rank)
-        log_info(f"[INFO] high_ckpts     : {len(high_checkpoint_paths)}", rank=rank)
-        log_info(f"[INFO] low_ckpts      : {len(low_checkpoint_paths)}", rank=rank)
+        log_info(f"[INFO] checkpoints    : {len(checkpoint_jobs)}", rank=rank)
         log_info(f"[INFO] output_root    : {output_root}", rank=rank)
         log_info(f"[INFO] prompt_records : {len(prompt_records)}", rank=rank)
         log_info(f"[INFO] generation_dev : {args.generation_device}", rank=rank)
