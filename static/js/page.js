@@ -134,9 +134,9 @@
     return { node: node, video: v, ar: ar };
   }
 
-  function caption(it, clamp) {
+  function caption(it, clamp, showName) {
     return el("figcaption", { class: "cap" }, [
-      el("span", { class: "name", text: it.species }),
+      showName === false ? null : el("span", { class: "name", text: it.species }),
       el("p", { class: "prompt", text: it.prompt, title: clamp ? it.prompt : null })
     ]);
   }
@@ -391,7 +391,7 @@
       var it = byId[id];
       var m = media(it, { small: true });
       openOnActivate(m.node, it);
-      var fig = el("figure", { class: "g-tile" }, [m.node, caption(it, true)]);
+      var fig = el("figure", { class: "g-tile" }, [m.node, caption(it, true, false)]);
       return { fig: fig, media: m.node, video: m.video, ar: m.ar, order: i, species: it.species };
     });
     tiles.sort(function (a, b) { return shape(a.ar) - shape(b.ar) || a.order - b.order; });

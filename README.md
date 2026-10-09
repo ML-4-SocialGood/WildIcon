@@ -21,7 +21,7 @@ MP4s and posters are copied from the verified `outputs/website` bundle without a
 
 ## Layout
 
-Every example is the video at its own aspect ratio, with a reference inset in the lower-left corner and its species below the clip. Reference insets retain the whole photograph, without a text label, and use the freed space for a larger image. Clicking the video opens the larger reference/video comparison. Prompts appear at the top on hover, or below the clip on touch screens. The gallery uses justified rows: clips of similar shape are grouped, and each row shares one height while filling the full width. Until a video exists, the reference photograph fills its frame.
+Every example is the video at its own aspect ratio, with a reference inset in the lower-left corner. Featured clips show their species below the video; gallery clips omit this label and retain a 14px gap between rows. Reference insets retain the whole photograph, without a text label, and use the freed space for a larger image. Clicking the video opens the larger reference/video comparison. Prompts appear at the top on hover, or below the clip on touch screens. The gallery uses justified rows: clips of similar shape are grouped, and each row shares one height while filling the full width. Until a video exists, the reference photograph fills its frame.
 
 Carousel arrows step through the seven examples in order, even when multiple clips are visible on a wide screen. Native scrolling selects the closest clip to the centre once scrolling settles.
 
