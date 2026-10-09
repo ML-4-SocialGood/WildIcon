@@ -8,7 +8,7 @@ python3 -m http.server 8791 --directory /data/yil708/GenerativeModel/WildIcon-pa
 
 ## Included videos
 
-Open `index.html` directly, or serve it at `http://localhost:8791/`. The page includes **49 curated Wan 2.2 videos and their 49 reference images**. The hero wall uses 28 examples with at most 10 playing videos, the carousel shows seven reference/video pairs, and the gallery includes all 49 pairs with species filters and a "Show all" button.
+Open `index.html` directly, or serve it at `http://localhost:8791/`. The page includes **49 curated Wan 2.2 videos and their 49 reference images**. The hero wall uses 28 reference photographs, the carousel shows seven videos with reference-image insets, and the gallery includes all 49 examples with species filters and a "Show all" button.
 
 Video files in `static/preview/` are included when adding the page to a Git repository. The page displays the available clips without URL parameters, model badges or layout-review notices. Model provenance remains in the media metadata and manifests. Added WildIcon outputs take precedence over the existing Wan 2.2 clips, so they can be replaced one at a time.
 
@@ -21,7 +21,7 @@ MP4s and posters are copied from the verified `outputs/website` bundle without a
 
 ## Layout
 
-Every example is shown as a pair: the reference photograph, and next to it the available video made from that photograph and its prompt. The current clips are Wan 2.2 outputs; added WildIcon outputs take precedence.
+Every example is the video at its own aspect ratio, with its reference photograph inset in the top-left corner and the prompt shown on hover (below the clip on touch screens). The gallery uses justified rows: clips of similar shape are grouped, and each row shares one height while filling the full width. Until a video exists, the reference photograph fills its frame.
 
 | Path | Content |
 |---|---|
@@ -36,7 +36,7 @@ Every example is shown as a pair: the reference photograph, and next to it the a
 | `static/figures/` | Method and dataset figures, rendered from the camera-ready PDFs |
 | `static/css/style.css`, `static/js/page.js` | Style and behaviour; no framework |
 
-Fonts come from Google Fonts (Instrument Serif, Inter). The hero is a tilted wall of seven staggered columns built from `heroWall` (28 examples); at most 10 of its tiles play video, the rest show a still. A back-to-top button with a scroll-progress ring appears after the hero. Videos autoplay muted and loop when they scroll into view, pause when they leave it or the tab is hidden, and resume when the reader returns. Reduced-motion preferences disable decorative animations while the video demonstrations continue to play. If the browser blocks autoplay, native playback controls appear; interacting with the page also retries visible clips. The gallery shows its first half until "Show all" is clicked.
+Fonts come from Google Fonts (Instrument Serif, Inter). The hero is a tilted wall of seven columns of rounded reference photographs (from `heroWall`); neighbouring columns slide in opposite directions as the page scrolls. Videos autoplay muted and loop when they scroll into view, pause when they leave it or the tab is hidden, and resume when the reader returns. Reduced-motion preferences disable decorative animations while the video demonstrations continue to play. If the browser blocks autoplay, native playback controls appear; interacting with the page also retries visible clips. The gallery shows its first half until "Show all" is clicked.
 
 ## Adding WildIcon videos
 

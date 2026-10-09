@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="static/css/style.css?v=ack-20261009">
+  <link rel="stylesheet" href="static/css/style.css?v=gallery-20261009">
 </head>
 <body>
 
@@ -58,11 +58,11 @@
     <p class="subtitle">Generating the Wild: Individual-Consistent Image-to-Video Generation for&nbsp;Wildlife</p>
 
     <p class="authors">
-      <a href="https://openreview.net/profile?id=~Yuzhuo_Li1">Yuzhuo Li</a>
-      <a href="https://openreview.net/profile?id=~Di_Zhao4">Di Zhao</a>
-      <a href="https://openreview.net/profile?id=~Xinyu_Zhang3">Xinyu Zhang</a>
-      <a href="https://openreview.net/profile?id=~Daniel_Wilson4">Daniel Wilson</a>
-      <a href="https://openreview.net/profile?id=~Yun_Sing_Koh2">Yun Sing Koh</a>
+      <a href="https://jim-lyz1024.github.io/">Yuzhuo Li</a>
+      <a href="https://virtuezhao.github.io/">Di Zhao</a>
+      <a href="https://zhangxinyu-xyz.github.io/">Xinyu Zhang</a>
+      <a href="https://profiles.auckland.ac.nz/daniel-wilson">Daniel Wilson</a>
+      <a href="https://profiles.auckland.ac.nz/y-koh">Yun Sing Koh</a>
     </p>
     <p class="affiliation">School of Computer Science, University of Auckland</p>
 
@@ -70,7 +70,6 @@
       <a class="btn primary" href="https://openreview.net/forum?id=Twfrs5sTBH"><svg><use href="#i-paper"/></svg>Paper</a>
       <a class="btn" href="https://arxiv.org/abs/2610.05587"><svg><use href="#i-arxiv"/></svg>arXiv</a>
       <a class="btn" href="https://github.com/ML-4-SocialGood/WildIcon"><svg><use href="#i-code"/></svg>Code</a>
-      <a class="btn" href="https://github.com/ML-4-SocialGood/WildIcon/tree/main/annotations"><svg><use href="#i-data"/></svg>WildlifeVid</a>
       <a class="btn" href="#citation"><svg><use href="#i-quote"/></svg>BibTeX</a>
     </div>
   </div>
@@ -117,7 +116,6 @@
       <button type="button" role="radio" aria-checked="false" data-layer="seg">Foreground</button>
       <button type="button" role="radio" aria-checked="false" data-layer="hf">High frequency</button>
     </div>
-    <p class="formula"><i>I</i><sub>hf</sub> = <i>I</i><sub>seg</sub> − <i>K</i> ∗ <i>I</i><sub>seg</sub>, with a Gaussian <i>K</i> (σ = 3 at 832&nbsp;px) and the foreground <i>I</i><sub>seg</sub> from SAM&nbsp;3, as in the model's identity branch. Computed from the reference photographs on this page.</p>
   </div>
   <div class="obs-stage">
     <div class="lens-stage" data-lens aria-label="Reference photograph with a high-frequency lens">
@@ -172,7 +170,7 @@
 <section class="wrap reveal" id="gallery">
   <div class="section-head">
     <h2>Gallery</h2>
-    <p>Reference photograph and generated video side by side. Click a pair to open it with the full prompt.</p>
+    <p>Each video carries its reference photograph in the corner. Hover to read the prompt; click to open it larger.</p>
   </div>
   <div class="chips" role="toolbar" aria-label="Filter by species" data-chips></div>
   <div class="grid" data-grid></div>
@@ -220,6 +218,6 @@
 </dialog>
 
 <script src="static/data.js"></script>
-<script src="static/js/page.js?v=autoplay-20261009"></script>
+<script src="static/js/page.js?v=gallery-20261009"></script>
 </body>
 </html>

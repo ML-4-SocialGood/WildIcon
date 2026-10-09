@@ -116,6 +116,24 @@
     return { node: node, video: v };
   }
 
+  // One example: the video at its own aspect ratio, the reference photograph inset top-left,
+  // and the prompt on hover. Until a video exists, the reference photograph fills the frame.
+  function media(it, opts) {
+    opts = opts || {};
+    var w = output(it);
+    var ar = w ? w.width / w.height : it.refWidth / it.refHeight;
+    var v = w ? outputVideo(it, opts.preload) : null;
+    var refAlt = it.species + " reference photograph " + (it.referenceId || "");
+    var node = el("div", { class: "media" + (w ? "" : " pending"), tabindex: "0", role: "button",
+      "aria-label": "Open the " + it.species.toLowerCase() + " example" }, [
+      v || el("img", { class: "fill", src: opts.small ? thumb(it) : it.reference, alt: refAlt, loading: "lazy" }),
+      w ? el("img", { class: "inset", src: thumb(it), alt: refAlt, loading: "lazy" }) : null,
+      w ? null : el("span", { class: "pending-badge", text: "Video coming soon" }),
+      el("p", { class: "hover-prompt", text: it.prompt })
+    ]);
+    return { node: node, video: v, ar: ar };
+  }
+
   function caption(it, clamp) {
     return el("figcaption", { class: "cap" }, [
       el("span", { class: "name", text: it.species }),
@@ -129,36 +147,55 @@
     node.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openViewer(it); } });
   }
 
-  // ---------- hero wall: staggered columns of examples ----------
-  // A tile plays its video when there is one (up to HERO_VIDEOS of them, to keep the page light);
-  // other tiles show the video's poster, or the reference photograph while no video exists.
+  // ---------- hero: columns of reference photographs that move with the scroll ----------
+  // Every frame is a still photograph, so the wall looks the same whether or not videos exist.
+  // Neighbouring columns slide in opposite directions as the reader scrolls past the hero.
 
-  var HERO_VIDEOS = 10;
-  var COLS = 7, ROWS = 8;
-  var TILE_AR = ["4 / 3", "1 / 1", "4 / 5", "4 / 3", "3 / 2", "1 / 1"];
-  var wall = $("[data-wall]");
-  var wallVideos = [];
-  var heroIds = PAGE.heroWall;
-  for (var c = 0; c < COLS; c++) {
-    var col = el("div", { class: "wall-col" });
-    for (var r = 0; r < ROWS; r++) {
-      // rows past the list take tiles from two columns over, so a picture never repeats in its own column
-      var k = r * COLS + c;
-      if (k >= heroIds.length) k = ((r - Math.floor(heroIds.length / COLS)) * COLS + (c + 2) % COLS) % heroIds.length;
-      var it = byId[heroIds[k % heroIds.length]];
-      var tile = el("div", { class: "wall-tile", style: "--ar:" + TILE_AR[(r + c) % TILE_AR.length] });
-      var w = output(it);
-      var firstUse = r * COLS + c < heroIds.length;
-      if (w && firstUse && wallVideos.length < HERO_VIDEOS) {
-        var v = outputVideo(it, "metadata"); wallVideos.push(v); tile.appendChild(v);
-      } else {
-        tile.appendChild(el("img", { src: w ? w.poster : thumb(it), alt: "", loading: r > 3 ? "lazy" : "eager" }));
+  (function () {
+    var COLS = 7, ROWS = 24;
+    var TILE_AR = ["4 / 3", "1 / 1", "4 / 5", "4 / 3", "3 / 2", "1 / 1"];
+    var wall = $("[data-wall]");
+    var heroEl = $(".hero");
+    var ids = PAGE.heroWall;
+    var strips = [];
+    for (var c = 0; c < COLS; c++) {
+      var col = el("div", { class: "wall-col" });
+      for (var r = 0; r < ROWS; r++) {
+        // stepping by 5 through the photos: no repeats within a strip, and neighbouring strips never match
+        var it = byId[ids[(c * 11 + r * 5) % ids.length]];
+        col.appendChild(el("div", { class: "wall-tile", style: "--ar:" + TILE_AR[(r + c) % TILE_AR.length] }, [
+          el("img", { src: thumb(it), alt: "", loading: r < 10 ? "eager" : "lazy", decoding: "async" })
+        ]));
       }
-      col.appendChild(tile);
+      wall.appendChild(col);
+      strips.push({ el: col, dir: c % 2 ? 1 : -1, stagger: (c % 3) / 3 });
     }
-    wall.appendChild(col);
-  }
-  autoplayInView(wallVideos, 0.1);
+
+    function move() {
+      var y = reduceMotion ? 0 : Math.min(window.scrollY, heroEl.offsetHeight);
+      strips.forEach(function (s) {
+        var t = Math.max(-s.slack, Math.min(0, s.base + s.dir * y * 0.5));
+        s.el.style.transform = "translate3d(0," + t.toFixed(1) + "px,0)";
+      });
+    }
+    function measure() {
+      var wallH = wall.clientHeight;
+      strips.forEach(function (s) {
+        s.slack = Math.max(0, s.el.offsetHeight - wallH);   // how far this strip can travel
+        s.base = -s.slack * (0.35 + 0.3 * s.stagger);       // start part-way, staggered between strips
+      });
+      move();
+    }
+    var ticking = false;
+    window.addEventListener("scroll", function () {
+      if (ticking || window.scrollY > heroEl.offsetHeight + 200) return;
+      ticking = true;
+      requestAnimationFrame(function () { ticking = false; move(); });
+    }, { passive: true });
+    window.addEventListener("resize", measure);
+    window.addEventListener("load", measure);
+    measure();
+  })();
 
   // ---------- back to top ----------
 
@@ -212,16 +249,16 @@
     this.textContent = open ? "Show less" : "Read the full abstract";
   });
 
-  // ---------- featured carousel ----------
+  // ---------- featured carousel: one height, each clip at its own width ----------
 
   (function () {
     var track = $("[data-track]");
     var dots = $("[data-dots]");
     var cards = PAGE.featured.map(function (id, i) {
       var it = byId[id];
-      var p = pair(it, i === 0 ? "auto" : "none");
-      var card = el("figure", { class: "card" }, [p.node, caption(it, false)]);
-      openOnActivate(p.node, it, function () {
+      var m = media(it, { preload: i === 0 ? "auto" : "none" });
+      var card = el("figure", { class: "card", style: "--ar:" + m.ar.toFixed(4) }, [m.node, caption(it, false)]);
+      openOnActivate(m.node, it, function () {
         if (card.classList.contains("active")) return true;
         go(i);
         return false;
@@ -230,8 +267,17 @@
       var dot = el("button", { type: "button", "aria-label": "Show the " + it.species.toLowerCase() });
       dot.addEventListener("click", function () { go(i); });
       dots.appendChild(dot);
-      return { card: card, video: p.video, dot: dot };
+      return { card: card, video: m.video, dot: dot };
     });
+
+    // pad the ends so the first and last cards can sit in the centre
+    function pad() {
+      var first = cards[0].card, last = cards[cards.length - 1].card;
+      track.style.paddingLeft = Math.max(0, (track.clientWidth - first.offsetWidth) / 2) + "px";
+      track.style.paddingRight = Math.max(0, (track.clientWidth - last.offsetWidth) / 2) + "px";
+    }
+    pad();
+    window.addEventListener("resize", pad);
 
     var current = 0, inView = false;
     function go(i) {
@@ -332,49 +378,75 @@
     show();
   })();
 
-  // ---------- gallery: autoplay in view, first half shown until expanded ----------
+  // ---------- gallery: justified rows, similar shapes together, first half until expanded ----------
 
   (function () {
     var grid = $("[data-grid]");
     var chips = $("[data-chips]");
     var more = $("[data-more]");
-    var tiles = PAGE.gallery.map(function (id) {
+    var GAP = 14;   // matches .grid column-gap
+
+    // wide, standard, near-square, portrait: clips of similar shape share rows, so rows stay even
+    function shape(ar) { return ar >= 1.6 ? 0 : ar >= 1.15 ? 1 : ar >= 0.9 ? 2 : 3; }
+
+    var tiles = PAGE.gallery.map(function (id, i) {
       var it = byId[id];
-      var p = pair(it, "none", true);
-      openOnActivate(p.node, it);
-      var fig = el("figure", { class: "g-tile", "data-species": it.species }, [p.node, caption(it, true)]);
-      grid.appendChild(fig);
-      return { fig: fig, video: p.video };
+      var m = media(it, { small: true });
+      openOnActivate(m.node, it);
+      var fig = el("figure", { class: "g-tile" }, [m.node, caption(it, true)]);
+      return { fig: fig, media: m.node, video: m.video, ar: m.ar, order: i, species: it.species };
     });
+    tiles.sort(function (a, b) { return shape(a.ar) - shape(b.ar) || a.order - b.order; });
+    tiles.forEach(function (t) { grid.appendChild(t.fig); });
+    autoplayInView(tiles.map(function (t) { return t.video; }).filter(Boolean), 0.35);
 
-    var vids = tiles.map(function (t) { return t.video; }).filter(Boolean);
-    autoplayInView(vids, 0.35);
-
-    // Collapsed, the gallery shows the first half (an even number, so the two-column rows stay full).
-    var limit = 2 * Math.ceil(tiles.length / 4);
     var filter = "All", expanded = false;
 
-    function apply() {
-      var matches = 0;
-      tiles.forEach(function (t) {
-        var match = filter === "All" || t.fig.getAttribute("data-species") === filter;
-        if (match) matches++;
-        t.fig.hidden = !(match && (expanded || matches <= limit));
-        if (t.fig.hidden) pause(t.video);
+    function layout() {
+      var W = grid.clientWidth;
+      if (!W) return;
+      var target = W < 560 ? 150 : W < 960 ? 200 : 236;
+      var matched = tiles.filter(function (t) { return filter === "All" || t.species === filter; });
+
+      // fill each row to the full width; the last row keeps roughly the target height
+      var rows = [], row = [], sum = 0;
+      matched.forEach(function (t) {
+        row.push(t); sum += t.ar;
+        if (sum * target + GAP * (row.length - 1) >= W) {
+          rows.push({ items: row, h: (W - GAP * (row.length - 1)) / sum });
+          row = []; sum = 0;
+        }
       });
-      var collapsible = matches > limit;
+      if (row.length) rows.push({ items: row, h: Math.min(target * 1.1, (W - GAP * (row.length - 1)) / sum) });
+
+      // collapsed: whole rows, up to about half of the examples
+      var cut = rows.length, count = 0, half = Math.ceil(matched.length / 2);
+      for (var i = 0; i < rows.length; i++) { count += rows[i].items.length; if (count >= half) { cut = i + 1; break; } }
+      var shownRows = expanded ? rows.length : cut;
+
+      var shown = new Set();
+      rows.forEach(function (r, i) {
+        r.items.forEach(function (t) {
+          if (i < shownRows) shown.add(t);
+          t.fig.style.width = Math.floor(t.ar * r.h * 100) / 100 + "px";
+          t.media.style.height = Math.floor(r.h * 100) / 100 + "px";
+        });
+      });
+      tiles.forEach(function (t) { t.fig.hidden = !shown.has(t); if (t.fig.hidden) pause(t.video); });
+
+      var collapsible = cut < rows.length;
       more.hidden = !collapsible;
       grid.classList.toggle("collapsed", collapsible && !expanded);
       more.setAttribute("aria-expanded", String(expanded));
       more.textContent = "";
-      more.appendChild(document.createTextNode(expanded ? "Show fewer" : "Show all " + matches + " examples"));
+      more.appendChild(document.createTextNode(expanded ? "Show fewer" : "Show all " + matched.length + " examples"));
       more.appendChild(icon("down"));
     }
 
     more.addEventListener("click", function () {
       var before = more.getBoundingClientRect().top;
       expanded = !expanded;
-      apply();
+      layout();
       // keep the button where it was, so collapsing does not throw the reader further down the page
       if (!expanded) window.scrollBy(0, more.getBoundingClientRect().top - before);
     });
@@ -385,11 +457,14 @@
       b.addEventListener("click", function () {
         $$("button", chips).forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
         filter = s;
-        apply();
+        layout();
       });
       chips.appendChild(b);
     });
-    apply();
+
+    var resizeTimer = null;
+    window.addEventListener("resize", function () { clearTimeout(resizeTimer); resizeTimer = setTimeout(layout, 120); });
+    layout();
   })();
 
   // ---------- viewer ----------
