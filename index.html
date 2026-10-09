@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WildIcon</title>
+  <meta name="description" content="WildIcon: individual-consistent image-to-video generation for wildlife. NeurIPS 2026.">
+  <meta name="theme-color" content="#0a0b0a">
+  <meta property="og:title" content="WildIcon: Generating the Wild">
+  <meta property="og:description" content="Individual-consistent image-to-video generation for wildlife. NeurIPS 2026.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ml-4-socialgood.github.io/WildIcon/">
+  <meta property="og:image" content="https://ml-4-socialgood.github.io/WildIcon/static/social.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="static/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-paper" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M6 2.8h8.2L19 7.6v13.6H6zM14 2.8v5h5M9 12h7M9 15.5h7"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85V21c0 .27.18.58.69.48A10 10 0 0 0 12 2"/></symbol>
+  <symbol id="i-data" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.8"/><path d="M4.5 5.5v13c0 1.55 3.36 2.8 7.5 2.8s7.5-1.25 7.5-2.8v-13M4.5 12c0 1.55 3.36 2.8 7.5 2.8s7.5-1.25 7.5-2.8"/></g></symbol>
+  <symbol id="i-quote" viewBox="0 0 24 24"><path fill="currentColor" d="M5 18.5h5.2v-6.2H7.3c0-2.5 1-3.9 3-4.4V5.5C6.9 6 5 8.6 5 12.6zm8.8 0H19v-6.2h-2.9c0-2.5 1-3.9 3-4.4V5.5c-3.4.5-5.3 3.1-5.3 7.1z"/></symbol>
+  <symbol id="i-arxiv" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M5.5 4.5l13 15M18.5 4.5l-5.2 6M10.7 13.5l-5.2 6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 9l7 7 7-7"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 19V5M5.5 11.5L12 5l6.5 6.5"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M7 4.5v15l12.5-7.5z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path fill="currentColor" d="M6.5 4.5h4v15h-4zM13.5 4.5h4v15h-4z"/></symbol>
+</svg>
+
+<nav class="topnav" id="topnav" aria-label="Sections">
+  <a class="wordmark" href="#top">Wild<em>Icon</em></a>
+  <div class="nav-links">
+    <a href="#abstract">Abstract</a>
+    <a href="#results">Results</a>
+    <a href="#observation">Observation</a>
+    <a href="#method">Method</a>
+    <a href="#wildlifevid">Dataset</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#citation">BibTeX</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-wall" data-wall aria-hidden="true"></div>
+  <div class="hero-shade" aria-hidden="true"></div>
+
+  <div class="hero-content wrap">
+    <h1>Wild<em>Icon</em></h1>
+    <p class="subtitle">Generating the Wild: Individual-Consistent Image-to-Video Generation for&nbsp;Wildlife</p>
+
+    <p class="authors">
+      <a href="https://openreview.net/profile?id=~Yuzhuo_Li1">Yuzhuo Li</a>
+      <a href="https://openreview.net/profile?id=~Di_Zhao4">Di Zhao</a>
+      <a href="https://openreview.net/profile?id=~Xinyu_Zhang3">Xinyu Zhang</a>
+      <a href="https://openreview.net/profile?id=~Daniel_Wilson4">Daniel Wilson</a>
+      <a href="https://openreview.net/profile?id=~Yun_Sing_Koh2">Yun Sing Koh</a>
+    </p>
+    <p class="affiliation">School of Computer Science, University of Auckland</p>
+
+    <div class="buttons">
+      <a class="btn primary" href="https://openreview.net/forum?id=Twfrs5sTBH"><svg><use href="#i-paper"/></svg>Paper</a>
+      <a class="btn" href="https://arxiv.org/abs/2610.05587"><svg><use href="#i-arxiv"/></svg>arXiv</a>
+      <a class="btn" href="https://github.com/ML-4-SocialGood/WildIcon"><svg><use href="#i-code"/></svg>Code</a>
+      <a class="btn" href="https://github.com/ML-4-SocialGood/WildIcon/tree/main/annotations"><svg><use href="#i-data"/></svg>WildlifeVid</a>
+      <a class="btn" href="#citation"><svg><use href="#i-quote"/></svg>BibTeX</a>
+    </div>
+  </div>
+
+  <a class="scroll-cue" href="#abstract" aria-label="Scroll to abstract"><span></span></a>
+</header>
+
+<main>
+
+<section class="wrap split reveal" id="abstract">
+  <h2>Abstract</h2>
+  <div class="abstract" id="abstract-body">
+    <p class="lead">Individual-level wildlife identification often suffers from data scarcity, as varying observations of the same animal under diverse poses, viewpoints, and motions are rarely available. Image-to-video (I2V) generation offers a promising way to mitigate this limitation by synthesizing additional observations from a single reference image.</p>
+    <div class="more-text">
+      <p>However, existing I2V models mainly emphasize global layout, semantics, and motion, and therefore often fail to preserve fine-grained local appearance cues that distinguish one wildlife individual from another, such as fur texture, stripe boundaries, spot configurations, and contour transitions. We observe that these identity-critical cues are closely related to high-frequency information, which is essential for distinguishing individuals.</p>
+      <p>To address this challenge, we propose <strong>WildIcon</strong>, a high-frequency-guided I2V framework for wildlife individual consistency. Specifically, WildIcon introduces a frequency-aware identity encoding branch that extracts individual-specific high-frequency cues from the reference image. Combined with isolated foreground information, the resulting identity tokens are then injected into cross-attention blocks as identity conditioning. Building on a frozen backbone with lightweight identity adaptation, WildIcon preserves fine-grained identity cues visible in the reference image while retaining the motion controllability and semantic fidelity of the base I2V model.</p>
+      <p>In addition, to support the training and evaluation of wildlife individual-consistent I2V, we construct <strong>WildlifeVid</strong>, a wildlife-centric video dataset with high-quality, temporally coherent clips and individual-level identity labels. Experiments on I2V generation and downstream animal re-identification (ReID) show that WildIcon achieves stronger individual consistency than existing baselines, and that its filtered outputs can serve as useful candidate training augmentations for downstream ReID.</p>
+    </div>
+    <button type="button" class="text-btn" id="abstract-toggle" aria-expanded="false" aria-controls="abstract-body">Read the full abstract</button>
+  </div>
+</section>
+
+<section class="featured reveal" id="results">
+  <div class="wrap section-head">
+    <h2>One photograph in, a moving individual&nbsp;out</h2>
+    <p>A reference photograph and a text prompt, paired with the generated video.</p>
+  </div>
+  <div class="carousel" data-carousel>
+    <div class="track" data-track></div>
+    <div class="wrap carousel-controls">
+      <button type="button" class="round" data-prev aria-label="Previous example"><svg><use href="#i-left"/></svg></button>
+      <div class="dots" data-dots></div>
+      <button type="button" class="round" data-next aria-label="Next example"><svg><use href="#i-right"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<section class="wrap observation reveal" id="observation">
+  <div class="obs-text">
+    <h2>Identity is in the <em>fine detail</em></h2>
+    <p>Stripe boundaries, spot configurations, fur texture and contour transitions tell one individual from another. These cues sit in the high frequencies of the image, and they are what I2V models tend to lose.</p>
+    <p class="hint">Move over the photograph to look through the high-frequency lens.</p>
+    <div class="seg-control" role="radiogroup" aria-label="Base layer" data-layer-control>
+      <button type="button" role="radio" aria-checked="true" data-layer="rgb">Photograph</button>
+      <button type="button" role="radio" aria-checked="false" data-layer="seg">Foreground</button>
+      <button type="button" role="radio" aria-checked="false" data-layer="hf">High frequency</button>
+    </div>
+    <p class="formula"><i>I</i><sub>hf</sub> = <i>I</i><sub>seg</sub> − <i>K</i> ∗ <i>I</i><sub>seg</sub>, with a Gaussian <i>K</i> (σ = 3 at 832&nbsp;px) and the foreground <i>I</i><sub>seg</sub> from SAM&nbsp;3, as in the model's identity branch. Computed from the reference photographs on this page.</p>
+  </div>
+  <div class="obs-stage">
+    <div class="lens-stage" data-lens aria-label="Reference photograph with a high-frequency lens">
+      <img class="lens-base" alt="">
+      <img class="lens-top" alt="" aria-hidden="true">
+      <span class="lens-ring" aria-hidden="true"></span>
+    </div>
+    <div class="lens-picker" data-lens-picker></div>
+  </div>
+</section>
+
+<section class="wrap reveal" id="method">
+  <div class="section-head">
+    <h2>Method</h2>
+    <p>WildIcon adds a foreground-filtered high-frequency identity branch to a frozen Wan I2V backbone.</p>
+  </div>
+  <figure class="panel">
+    <img src="static/figures/method.jpg" alt="WildIcon framework: foreground segmentation and a high-frequency operator feed an identity encoder whose tokens are fused with text tokens and injected into selected DiT blocks of a frozen Wan I2V backbone." loading="lazy">
+  </figure>
+  <div class="points">
+    <div>
+      <h3>Foreground-filtered high-frequency cues</h3>
+      <p>The reference animal is isolated from its background, and a high-pass map of the foreground exposes stripes, spots and contour transitions.</p>
+    </div>
+    <div>
+      <h3>Identity tokens through cross-attention</h3>
+      <p>Foreground appearance and high-frequency cues become identity tokens, fused with the text tokens into one condition sequence for selected middle and late DiT blocks.</p>
+    </div>
+    <div>
+      <h3>Frozen backbone</h3>
+      <p>The Wan I2V backbone stays frozen apart from lightweight identity adaptation, so motion control and prompt following come from the base model.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap reveal" id="wildlifevid">
+  <div class="section-head">
+    <h2>WildlifeVid</h2>
+    <p>A wildlife-centric video dataset with temporally coherent clips and individual-level identity labels, assembled from MammalNet, Animal Kingdom, LoTE and AiM.</p>
+  </div>
+  <div class="stats">
+    <div><span class="num" data-count="37441">37,441</span><span class="label">video clips</span></div>
+    <div><span class="num" data-count="135">135</span><span class="label">species</span></div>
+    <div><span class="num" data-count="4">4</span><span class="label">source datasets</span></div>
+  </div>
+  <figure class="panel">
+    <img src="static/figures/dataset.jpg" alt="WildlifeVid statistics: source datasets, clip durations, and the per-species distribution of videos." loading="lazy">
+  </figure>
+  <p class="fine">Annotations are released under CC BY 4.0. Source videos come from the original datasets under their own terms. <a class="arrow" href="https://github.com/ML-4-SocialGood/WildIcon/tree/main/annotations">Annotations and data card</a></p>
+</section>
+
+<section class="wrap reveal" id="gallery">
+  <div class="section-head">
+    <h2>Gallery</h2>
+    <p>Reference photograph and generated video side by side. Click a pair to open it with the full prompt.</p>
+  </div>
+  <div class="chips" role="toolbar" aria-label="Filter by species" data-chips></div>
+  <div class="grid" data-grid></div>
+  <div class="more-wrap"><button type="button" class="more-btn" data-more aria-controls="gallery" hidden></button></div>
+</section>
+
+<section class="wrap reveal" id="citation">
+  <h2>Citation</h2>
+  <div class="bibtex">
+    <button type="button" class="copy" data-copy="#bibtex">Copy</button>
+<pre id="bibtex">@article{li2026generating,
+  title={Generating the Wild: Individual-Consistent Image-to-Video Generation for Wildlife},
+  author={Li, Yuzhuo and Zhao, Di and Zhang, Xinyu and Wilson, Daniel and Koh, Yun Sing},
+  journal={arXiv preprint arXiv:2610.05587},
+  year={2026}
+}</pre>
+  </div>
+</section>
+
+</main>
+
+<footer class="wrap footer">
+  <span class="wordmark">Wild<em>Icon</em></span>
+  <span>School of Computer Science, University of Auckland. Videos are H.264 at their native resolution and frame rate.</span>
+</footer>
+
+<button type="button" class="to-top" id="to-top" aria-label="Back to top">
+  <svg class="ring" viewBox="0 0 48 48" aria-hidden="true"><circle class="track" cx="24" cy="24" r="22"/><circle class="bar" cx="24" cy="24" r="22"/></svg>
+  <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-up"/></svg>
+</button>
+
+<dialog class="viewer" id="viewer">
+  <button type="button" class="viewer-close" aria-label="Close">Close</button>
+  <div class="viewer-body">
+  </div>
+  <p class="viewer-prompt"></p>
+</dialog>
+
+<script src="static/data.js"></script>
+<script src="static/js/page.js"></script>
+</body>
+</html>
