@@ -107,7 +107,6 @@
         ]);
     var node = el("div", { class: "pair", tabindex: "0", role: "button", "aria-label": "Open the " + it.species.toLowerCase() + " example" }, [
       el("div", { class: "panel-ref", style: "--ar:" + refAr.toFixed(4) }, [
-        el("span", { class: "tag", text: "Reference" }),
         el("img", { src: small ? thumb(it) : it.reference, alt: it.species + " reference photograph", loading: "lazy" })
       ]),
       out,
@@ -127,8 +126,7 @@
       "aria-label": "Open the " + it.species.toLowerCase() + " example" }, [
       v || el("img", { class: "fill", src: opts.small ? thumb(it) : it.reference, alt: refAlt, loading: "lazy" }),
       w ? el("div", { class: "reference-inset", style: "--reference-ar:" + Math.max(4 / 3, it.refWidth / it.refHeight).toFixed(4) }, [
-        el("img", { src: thumb(it), alt: refAlt, loading: "lazy" }),
-        el("span", { class: "reference-label", text: "Reference" })
+        el("img", { src: thumb(it), alt: refAlt, loading: "lazy" })
       ]) : null,
       w ? null : el("span", { class: "pending-badge", text: "Video coming soon" }),
       el("p", { class: "hover-prompt", text: it.prompt })
@@ -263,13 +261,18 @@
       track.style.paddingRight = Math.max(0, (track.clientWidth - last.offsetWidth) / 2) + "px";
     }
     pad();
-    window.addEventListener("resize", pad);
 
-    var current = 0, inView = false;
-    function go(i) {
-      i = (i + cards.length) % cards.length;
+    var current = 0, inView = false, settleTimer;
+    function centre(i) {
       var c = cards[i].card;
-      track.scrollTo({ left: c.offsetLeft - (track.clientWidth - c.offsetWidth) / 2, behavior: reduceMotion ? "auto" : "smooth" });
+      return c.offsetLeft - (track.clientWidth - c.offsetWidth) / 2;
+    }
+    function go(i, instant) {
+      i = (i + cards.length) % cards.length;
+      clearTimeout(settleTimer);
+      // Keep the requested index during the animation, including repeated arrow clicks.
+      setActive(i);
+      track.scrollTo({ left: centre(i), behavior: instant || reduceMotion ? "instant" : "smooth" });
     }
     function setActive(i) {
       current = i;
@@ -281,13 +284,22 @@
       });
     }
 
-    if ("IntersectionObserver" in window) {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting && e.intersectionRatio > 0.6) setActive(cards.findIndex(function (c) { return c.card === e.target; }));
+    // Several narrow clips can be mostly visible at once. Visibility alone does not
+    // identify the centred clip; reconcile native swipes only after scrolling settles.
+    track.addEventListener("scroll", function () {
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(function () {
+        var nearest = 0, distance = Infinity;
+        cards.forEach(function (c, i) {
+          var d = Math.abs(centre(i) - track.scrollLeft);
+          if (d < distance) { distance = d; nearest = i; }
         });
-      }, { root: track, threshold: [0.6] });
-      cards.forEach(function (c) { io.observe(c.card); });
+        if (nearest !== current) setActive(nearest);
+      }, 160);
+    }, { passive: true });
+    window.addEventListener("resize", function () { pad(); go(current, true); });
+
+    if ("IntersectionObserver" in window) {
       new IntersectionObserver(function (entries) { inView = entries[0].isIntersecting; setActive(current); }, { threshold: 0.2 }).observe(track);
     } else {
       inView = true;

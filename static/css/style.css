@@ -177,6 +177,7 @@ h3 { margin: 0 0 8px; font-size: 17px; line-height: 1.35; font-weight: 600; }
 .featured .section-head { margin-bottom: 36px; }
 .carousel { position: relative; }
 .track {
+  position: relative;
   display: flex;
   gap: 28px;
   overflow-x: auto;
@@ -210,7 +211,7 @@ h3 { margin: 0 0 8px; font-size: 17px; line-height: 1.35; font-weight: 600; }
   left: 12px;
   bottom: 12px;
   z-index: 3;
-  width: clamp(64px, 22%, 148px);
+  width: clamp(72px, 25%, 168px);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, .8);
   border-radius: 7px;
@@ -218,7 +219,6 @@ h3 { margin: 0 0 8px; font-size: 17px; line-height: 1.35; font-weight: 600; }
   pointer-events: none;
 }
 .reference-inset img { display: block; width: 100%; height: auto; aspect-ratio: var(--reference-ar, 4 / 3); object-fit: contain; }
-.reference-inset .reference-label { display: block; padding: 3px 2px; color: var(--ink); font-size: 10px; line-height: 1.2; text-align: center; }
 .hover-prompt {
   position: absolute;
   left: 0;
@@ -455,8 +455,7 @@ a.arrow::after { content: " \2192"; }
 .more-btn svg { font-size: 16px; transition: transform .3s ease; }
 .more-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
 .g-tile .media { width: 100%; border-radius: 10px; }
-.g-tile .reference-inset { left: 8px; bottom: 8px; width: clamp(48px, 24%, 104px); border-radius: 5px; }
-.g-tile .reference-inset .reference-label { padding: 2px 1px; font-size: 9px; }
+.g-tile .reference-inset { left: 8px; bottom: 8px; width: clamp(54px, 27%, 116px); border-radius: 5px; }
 .g-tile .hover-prompt { padding: 10px 12px 36px; font-size: 12.5px; line-height: 1.45; }
 .g-tile .cap { padding: 10px 2px 0; }
 .g-tile .cap .name { font-size: 19px; }
