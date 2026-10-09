@@ -36,7 +36,7 @@ Every example is shown as a pair: the reference photograph, and next to it the a
 | `static/figures/` | Method and dataset figures, rendered from the camera-ready PDFs |
 | `static/css/style.css`, `static/js/page.js` | Style and behaviour; no framework |
 
-Fonts come from Google Fonts (Instrument Serif, Inter). The hero is a tilted wall of seven staggered columns built from `heroWall` (28 examples); at most 10 of its tiles play video, the rest show a still. A back-to-top button with a scroll-progress ring appears after the hero. Videos start by themselves when they scroll into view and pause when they leave it. The gallery shows its first half until "Show all" is clicked.
+Fonts come from Google Fonts (Instrument Serif, Inter). The hero is a tilted wall of seven staggered columns built from `heroWall` (28 examples); at most 10 of its tiles play video, the rest show a still. A back-to-top button with a scroll-progress ring appears after the hero. Videos autoplay muted and loop when they scroll into view, pause when they leave it or the tab is hidden, and resume when the reader returns. Reduced-motion preferences disable decorative animations while the video demonstrations continue to play. If the browser blocks autoplay, native playback controls appear; interacting with the page also retries visible clips. The gallery shows its first half until "Show all" is clicked.
 
 ## Adding WildIcon videos
 

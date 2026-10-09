@@ -6,11 +6,52 @@
   PAGE.items.forEach(function (it) { byId[it.id] = it; });
 
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var videos = [];
 
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
-  function play(v) { if (!v) return; var p = v.play(); if (p && p.catch) p.catch(function () {}); }
-  function pause(v) { if (v) v.pause(); }
+  function play(v) {
+    if (!v) return;
+    v._wantsPlayback = true;
+    v.autoplay = !document.hidden;
+    if (document.hidden) return;
+    v.muted = true;
+    var p = v.play();
+    if (p && p.catch) p.catch(function (error) {
+      // A browser that blocks autoplay still gives the reader a way to start the clip.
+      if (error.name === "NotAllowedError" && v._wantsPlayback) {
+        v.controls = true;
+        v._autoplayBlocked = true;
+      }
+    });
+  }
+  function pause(v) {
+    if (!v) return;
+    v._wantsPlayback = false;
+    v.autoplay = false;
+    v.pause();
+  }
+  function resumeVisibleVideos() {
+    videos.forEach(function (v) { if (v._wantsPlayback && v.paused) play(v); });
+  }
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) {
+      videos.forEach(function (v) { v.autoplay = false; v.pause(); });
+    } else resumeVisibleVideos();
+  });
+  window.addEventListener("pageshow", resumeVisibleVideos);
+  document.addEventListener("pointerdown", resumeVisibleVideos, { passive: true });
+  document.addEventListener("keydown", resumeVisibleVideos);
+
+  // The videos are research content; reduced-motion preferences still apply to decorative animations.
+  function autoplayInView(list, threshold) {
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) play(e.target); else pause(e.target); });
+      }, { threshold: threshold });
+      list.forEach(function (v) { io.observe(v); });
+    } else list.forEach(play);
+  }
 
   function el(tag, attrs, children) {
     var node = document.createElement(tag);
@@ -41,7 +82,15 @@
     var w = output(it);
     var v = el("video", { muted: "", loop: "", playsinline: "", preload: preload || "none", poster: w.poster, src: w.video,
       "data-example": it.id, "aria-label": "Generated video of the " + it.species.toLowerCase() });
-    v.muted = true;
+    v.muted = v.defaultMuted = true;
+    videos.push(v);
+    v.addEventListener("loadeddata", function () { if (v._wantsPlayback) play(v); });
+    v.addEventListener("playing", function () {
+      if (v._autoplayBlocked) {
+        v.controls = !!v.closest("#viewer");
+        v._autoplayBlocked = false;
+      }
+    });
     return v;
   }
 
@@ -109,12 +158,7 @@
     }
     wall.appendChild(col);
   }
-  if (wallVideos.length && !reduceMotion && "IntersectionObserver" in window) {
-    var wio = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { if (e.isIntersecting) play(e.target); else pause(e.target); });
-    }, { threshold: 0.1 });
-    wallVideos.forEach(function (v) { wio.observe(v); });
-  }
+  autoplayInView(wallVideos, 0.1);
 
   // ---------- back to top ----------
 
@@ -201,7 +245,7 @@
         var on = j === i;
         c.card.classList.toggle("active", on);
         c.dot.setAttribute("aria-current", on ? "true" : "false");
-        if (on && inView && !reduceMotion) play(c.video); else pause(c.video);
+        if (on && inView) play(c.video); else pause(c.video);
       });
     }
 
@@ -213,6 +257,8 @@
       }, { root: track, threshold: [0.6] });
       cards.forEach(function (c) { io.observe(c.card); });
       new IntersectionObserver(function (entries) { inView = entries[0].isIntersecting; setActive(current); }, { threshold: 0.2 }).observe(track);
+    } else {
+      inView = true;
     }
 
     $("[data-prev]").addEventListener("click", function () { go(current - 1); });
@@ -302,12 +348,7 @@
     });
 
     var vids = tiles.map(function (t) { return t.video; }).filter(Boolean);
-    if (vids.length && !reduceMotion && "IntersectionObserver" in window) {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) { if (e.isIntersecting) play(e.target); else pause(e.target); });
-      }, { threshold: 0.35 });
-      vids.forEach(function (v) { io.observe(v); });
-    }
+    autoplayInView(vids, 0.35);
 
     // Collapsed, the gallery shows the first half (an even number, so the two-column rows stay full).
     var limit = 2 * Math.ceil(tiles.length / 4);
@@ -372,7 +413,13 @@
     play(vVideo);
   }
   function closeViewer() {
-    if (vVideo) { vVideo.pause(); vVideo.removeAttribute("src"); vVideo.load(); }
+    if (vVideo) {
+      pause(vVideo);
+      videos.splice(videos.indexOf(vVideo), 1);
+      vVideo.removeAttribute("src");
+      vVideo.load();
+      vVideo = null;
+    }
     viewer.close();
   }
   $(".viewer-close", viewer).addEventListener("click", closeViewer);
