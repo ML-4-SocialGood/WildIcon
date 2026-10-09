@@ -108,7 +108,7 @@
     var node = el("div", { class: "pair", tabindex: "0", role: "button", "aria-label": "Open the " + it.species.toLowerCase() + " example" }, [
       el("div", { class: "panel-ref", style: "--ar:" + refAr.toFixed(4) }, [
         el("span", { class: "tag", text: "Reference" }),
-        el("img", { src: small ? thumb(it) : it.reference, alt: it.species + " reference photograph " + (it.referenceId || ""), loading: "lazy" })
+        el("img", { src: small ? thumb(it) : it.reference, alt: it.species + " reference photograph", loading: "lazy" })
       ]),
       out,
       el("span", { class: "join", style: "--join:" + (100 * refAr / (refAr + outAr)).toFixed(2) + "%", "aria-hidden": "true" }, [icon("right")])
@@ -116,17 +116,20 @@
     return { node: node, video: v };
   }
 
-  // One example: the unobstructed video at its own aspect ratio and the prompt on hover.
-  // Its reference photograph lives in the caption below the video.
+  // One example: the video at its own aspect ratio, with its reference inset bottom-left.
   function media(it, opts) {
     opts = opts || {};
     var w = output(it);
     var ar = w ? w.width / w.height : it.refWidth / it.refHeight;
     var v = w ? outputVideo(it, opts.preload) : null;
-    var refAlt = it.species + " reference photograph " + (it.referenceId || "");
+    var refAlt = it.species + " reference photograph";
     var node = el("div", { class: "media" + (w ? "" : " pending"), tabindex: "0", role: "button",
       "aria-label": "Open the " + it.species.toLowerCase() + " example" }, [
       v || el("img", { class: "fill", src: opts.small ? thumb(it) : it.reference, alt: refAlt, loading: "lazy" }),
+      w ? el("div", { class: "reference-inset", style: "--reference-ar:" + Math.max(4 / 3, it.refWidth / it.refHeight).toFixed(4) }, [
+        el("img", { src: thumb(it), alt: refAlt, loading: "lazy" }),
+        el("span", { class: "reference-label", text: "Reference" })
+      ]) : null,
       w ? null : el("span", { class: "pending-badge", text: "Video coming soon" }),
       el("p", { class: "hover-prompt", text: it.prompt })
     ]);
@@ -134,20 +137,8 @@
   }
 
   function caption(it, clamp) {
-    var ref = el("button", { type: "button", class: "reference-thumb",
-      "aria-label": "View the " + it.species.toLowerCase() + " reference and video",
-      title: "View reference and video" }, [
-      el("img", { src: thumb(it), alt: it.species + " reference photograph " + it.referenceId, loading: "lazy" })
-    ]);
-    ref.addEventListener("click", function () { openViewer(it); });
     return el("figcaption", { class: "cap" }, [
-      el("div", { class: "reference-row" }, [ref,
-        el("div", { class: "reference-meta" }, [
-          el("span", { class: "reference-label", text: "Reference" }),
-          el("span", { class: "name", text: it.species }),
-          el("span", { class: "reference-id", text: it.referenceId })
-        ])
-      ]),
+      el("span", { class: "name", text: it.species }),
       el("p", { class: "prompt", text: it.prompt, title: clamp ? it.prompt : null })
     ]);
   }
@@ -157,15 +148,13 @@
     node.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openViewer(it); } });
   }
 
-  // ---------- hero: columns of reference photographs that move with the scroll ----------
+  // ---------- hero: static columns of reference photographs ----------
   // Every frame is a still photograph, so the wall looks the same whether or not videos exist.
-  // Neighbouring columns slide in opposite directions as the reader scrolls past the hero.
 
   (function () {
     var COLS = 7, ROWS = 24;
     var TILE_AR = ["4 / 3", "1 / 1", "4 / 5", "4 / 3", "3 / 2", "1 / 1"];
     var wall = $("[data-wall]");
-    var heroEl = $(".hero");
     var ids = PAGE.heroWall;
     var strips = [];
     for (var c = 0; c < COLS; c++) {
@@ -178,30 +167,17 @@
         ]));
       }
       wall.appendChild(col);
-      strips.push({ el: col, dir: c % 2 ? 1 : -1, stagger: (c % 3) / 3 });
+      strips.push({ el: col, stagger: (c % 3) / 3 });
     }
 
-    function move() {
-      var y = Math.min(window.scrollY, heroEl.offsetHeight);
-      strips.forEach(function (s) {
-        var t = Math.max(-s.slack, Math.min(0, s.base + s.dir * y * 0.5));
-        s.el.style.transform = "translate3d(0," + t.toFixed(1) + "px,0)";
-      });
-    }
     function measure() {
       var wallH = wall.clientHeight;
       strips.forEach(function (s) {
-        s.slack = Math.max(0, s.el.offsetHeight - wallH);   // how far this strip can travel
-        s.base = -s.slack * (0.35 + 0.3 * s.stagger);       // start part-way, staggered between strips
+        var slack = Math.max(0, s.el.offsetHeight - wallH);
+        var base = -slack * (0.35 + 0.3 * s.stagger);
+        s.el.style.transform = "translate3d(0," + base.toFixed(1) + "px,0)";
       });
-      move();
     }
-    var ticking = false;
-    window.addEventListener("scroll", function () {
-      if (ticking || window.scrollY > heroEl.offsetHeight + 200) return;
-      ticking = true;
-      requestAnimationFrame(function () { ticking = false; move(); });
-    }, { passive: true });
     window.addEventListener("resize", measure);
     window.addEventListener("load", measure);
     measure();
@@ -439,7 +415,6 @@
         r.items.forEach(function (t) {
           if (i < shownRows) shown.add(t);
           t.fig.style.width = Math.floor(t.ar * r.h * 100) / 100 + "px";
-          t.fig.classList.toggle("narrow", t.ar * r.h < 150);
           t.media.style.height = Math.floor(r.h * 100) / 100 + "px";
         });
       });
@@ -493,7 +468,7 @@
     if (vVideo) vVideo.controls = true;
     vBody.appendChild(p.node);
     vBody.appendChild(el("p", { class: "viewer-title", text: it.species }));
-    vBody.appendChild(el("a", { class: "reference-id", href: it.reference, target: "_blank", rel: "noopener", text: "Original reference · " + (it.referenceId || it.id) }));
+    vBody.appendChild(el("a", { class: "original-reference", href: it.reference, target: "_blank", rel: "noopener", text: "Open original reference" }));
     $(".viewer-prompt", viewer).textContent = it.prompt;
     viewer.showModal();
     play(vVideo);
