@@ -145,28 +145,6 @@ h1 em { color: var(--accent); }
 .btn.primary { background: var(--ink); color: #0a0b0a; border-color: var(--ink); }
 .btn.primary:hover { background: var(--accent); border-color: var(--accent); }
 
-.scroll-cue {
-  position: absolute;
-  left: 50%;
-  bottom: 26px;
-  width: 26px;
-  height: 42px;
-  margin-left: -13px;
-  border: 1.5px solid rgba(255, 255, 255, .4);
-  border-radius: 14px;
-}
-.scroll-cue span {
-  position: absolute;
-  left: 50%;
-  top: 8px;
-  width: 3px;
-  height: 8px;
-  margin-left: -1.5px;
-  border-radius: 2px;
-  background: var(--ink);
-  animation: cue 1.8s ease-in-out infinite;
-}
-@keyframes cue { 0% { opacity: 0; transform: translateY(0); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(14px); } }
 
 /* ---------- sections ---------- */
 
@@ -436,6 +414,12 @@ a.arrow::after { content: " \2192"; }
 
 /* ---------- citation & footer ---------- */
 
+#acknowledgements h2 { font-size: clamp(36px, 3.6vw, 46px); }
+.ack p { margin: 0 0 1em; max-width: var(--measure); color: var(--ink-2); }
+.ack a { color: var(--ink); border-bottom: 1px solid var(--rule); transition: color .2s, border-color .2s; }
+.ack a:hover { color: var(--accent); border-color: var(--accent); }
+
+
 #citation h2 { margin-bottom: 28px; }
 .bibtex { position: relative; }
 .bibtex pre {
@@ -554,7 +538,7 @@ a.arrow::after { content: " \2192"; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .wall-col, .scroll-cue span { animation: none; }
+  .wall-col { animation: none; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .card, .topnav, .to-top { transition: none; }
 }
