@@ -116,8 +116,8 @@
     return { node: node, video: v };
   }
 
-  // One example: the video at its own aspect ratio, the reference photograph inset top-left,
-  // and the prompt on hover. Until a video exists, the reference photograph fills the frame.
+  // One example: the unobstructed video at its own aspect ratio and the prompt on hover.
+  // Its reference photograph lives in the caption below the video.
   function media(it, opts) {
     opts = opts || {};
     var w = output(it);
@@ -127,7 +127,6 @@
     var node = el("div", { class: "media" + (w ? "" : " pending"), tabindex: "0", role: "button",
       "aria-label": "Open the " + it.species.toLowerCase() + " example" }, [
       v || el("img", { class: "fill", src: opts.small ? thumb(it) : it.reference, alt: refAlt, loading: "lazy" }),
-      w ? el("img", { class: "inset", src: thumb(it), alt: refAlt, loading: "lazy" }) : null,
       w ? null : el("span", { class: "pending-badge", text: "Video coming soon" }),
       el("p", { class: "hover-prompt", text: it.prompt })
     ]);
@@ -135,9 +134,20 @@
   }
 
   function caption(it, clamp) {
+    var ref = el("button", { type: "button", class: "reference-thumb",
+      "aria-label": "View the " + it.species.toLowerCase() + " reference and video",
+      title: "View reference and video" }, [
+      el("img", { src: thumb(it), alt: it.species + " reference photograph " + it.referenceId, loading: "lazy" })
+    ]);
+    ref.addEventListener("click", function () { openViewer(it); });
     return el("figcaption", { class: "cap" }, [
-      el("span", { class: "name", text: it.species }),
-      el("span", { class: "reference-id", text: it.referenceId }),
+      el("div", { class: "reference-row" }, [ref,
+        el("div", { class: "reference-meta" }, [
+          el("span", { class: "reference-label", text: "Reference" }),
+          el("span", { class: "name", text: it.species }),
+          el("span", { class: "reference-id", text: it.referenceId })
+        ])
+      ]),
       el("p", { class: "prompt", text: it.prompt, title: clamp ? it.prompt : null })
     ]);
   }
@@ -172,7 +182,7 @@
     }
 
     function move() {
-      var y = reduceMotion ? 0 : Math.min(window.scrollY, heroEl.offsetHeight);
+      var y = Math.min(window.scrollY, heroEl.offsetHeight);
       strips.forEach(function (s) {
         var t = Math.max(-s.slack, Math.min(0, s.base + s.dir * y * 0.5));
         s.el.style.transform = "translate3d(0," + t.toFixed(1) + "px,0)";
@@ -429,6 +439,7 @@
         r.items.forEach(function (t) {
           if (i < shownRows) shown.add(t);
           t.fig.style.width = Math.floor(t.ar * r.h * 100) / 100 + "px";
+          t.fig.classList.toggle("narrow", t.ar * r.h < 150);
           t.media.style.height = Math.floor(r.h * 100) / 100 + "px";
         });
       });
